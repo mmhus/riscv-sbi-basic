@@ -2,3 +2,5 @@
 **COMPILE*
 **.vscode
 **scripts/.local/
+**.tar*
+**toolchain

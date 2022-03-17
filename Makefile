@@ -4,7 +4,7 @@ ENV_DIR = $(shell dirname ${dir ${SRCS}}/dummy)
 
 #----------------- COMPILER VARIABLES -----------------
 # Architecture options to compiler.
-CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0_zbs2p0_zicbom_zicbopm_zicboz_pause
+CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0_zbs2p0_zicbom_zicbopm_zicboz
 # Optimization options to compiler.
 COPT ?= -O2
 # Additional options to compiler.
@@ -33,7 +33,7 @@ LIB_SRCS := \
 	$(wildcard $(CODE_DIR)/src/libs/*.c) \
 	$(wildcard $(CODE_DIR)/src/libs/*.S)
 
-ENV_INC := $(CODE_DIR)/include/env
+ENV_INCL := $(CODE_DIR)/include/env
 ENV_SRCS := \
 	$(wildcard $(CODE_DIR)/src/env/*.c) \
 	$(wildcard $(CODE_DIR)/src/env/*.S)
@@ -63,12 +63,12 @@ DISASSEMBLY_FLAGS := \
 
 #if given default LD
 LD_DEFAULT ?=
-LDFLAGS = -T$(realpath $(LIB_DIR))/link.ld
+LDFLAGS = -T${CODE_DIR}/linker.ld
 
 # Expansions
-COMPILE_EXP = $(shell echo "riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@")
-DISM_EXP = $(shell echo "riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
-ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE_CMD)")
+COMPILE_EXP = $(shell echo "riscv64-linux-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@")
+DISM_EXP = $(shell echo "riscv64-linux-objdump ${DISASSEMBLY_FLAGS} $< > $@")
+# ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE_CMD)")
 
 # Targets
 
@@ -78,26 +78,26 @@ default: compile
 
 setup:
 	mkdir -p ${COMPILE_DIR}
-	@echo "COMPILE_DIR : "${COMPILE_DIR}
+	@echo "CMP_DIR : "${COMPILE_DIR}
 	@echo "ELF_FILE: "${ELF_FILE}
 	@echo "DIS_FILE: "${DIS_FILE}
-	@echo "ENV_DIR : "${ENV_DIR}
+	@echo "ENV_INCL: "${ENV_INCL}
 	@echo "ENV_SRCS: "${ENV_SRCS}
-	@echo "LIB_DIR : "${LIB_DIR}
+	@echo "LIB_INCL: "${LIB_INCL}
 	@echo "LIB_SRCS: "${LIB_SRCS}
 	@echo "LDFLAGS : "${LDFLAGS}
 
 ${ELF_FILE}: setup ${SRCS}
 	@echo ${COMPILE_EXP} > ${COMPILE_DIR}/compile_cmd.sh.sh
 	@chmod u+x ${COMPILE_DIR}/compile_cmd.sh.sh
-	$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@
+	$(RISCV)/riscv64-linux-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@
 
 ${DIS_FILE}: ${ELF_FILE}
 	@echo ${DISM_EXP} > ${COMPILE_DIR}/disassembly_cmd.sh.sh
 	@chmod u+x ${COMPILE_DIR}/disassembly_cmd.sh.sh
-	$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@
+	$(RISCV)/riscv64-linux-objdump ${DISASSEMBLY_FLAGS} $< > $@
 	@echo "export DBG=${ELF_FILE}" > ${COMPILE_DIR}/run_gdb.sh.sh
-	@echo "riscv64-unknown-elf-gdb --exec=${realpath ${ELF_FILE}} --symbols=${realpath ${ELF_FILE}}" >> ${COMPILE_DIR}/run_gdb.sh.sh
+	@echo "riscv64-linux-gdb --exec=${realpath ${ELF_FILE}} --symbols=${realpath ${ELF_FILE}}" >> ${COMPILE_DIR}/run_gdb.sh.sh
 
 compile: ${ELF_FILE} ${DIS_FILE}
 	touch ${COMPILE_DIR}/failed.txt
