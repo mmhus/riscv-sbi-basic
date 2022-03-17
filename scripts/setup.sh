@@ -34,7 +34,6 @@ echo "" >> "$EXPORT_PATH"
 echo "export RISCV=$TOOLCHAIN_BIN_PATH" >> "$EXPORT_PATH"
 
 # SPIKE
-SPIKE_PATH=$(realpath "riscv-isa-sim/build")
 git submodule update --init --recursive
 cd "$SCRIPT_DIR/../riscv-isa-sim"
 if [[ ! -d "./build" ]]; then
@@ -46,6 +45,7 @@ if [[ ! -d "./build" ]]; then
   echo "export SPIKE=$SPIKE_PATH" >> "$EXPORT_PATH"
 fi
 cd ..
+SPIKE_PATH=$(realpath "riscv-isa-sim/build")
 echo "[I] SPIKE_PATH=$SPIKE_PATH"
 
 # Make source.sh executable
