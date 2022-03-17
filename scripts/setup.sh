@@ -42,10 +42,10 @@ if [[ ! -d "./build" ]]; then
   ../configure
   make -j $(nproc)
   cd ..
-  echo "export SPIKE=$SPIKE_PATH" >> "$EXPORT_PATH"
 fi
 cd ..
 SPIKE_PATH=$(realpath "riscv-isa-sim/build")
+echo "export SPIKE=$SPIKE_PATH" >> "$EXPORT_PATH"
 echo "[I] SPIKE_PATH=$SPIKE_PATH"
 
 # Make source.sh executable
