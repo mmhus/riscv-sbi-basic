@@ -4,7 +4,7 @@ ENV_DIR = $(shell dirname ${dir ${SRCS}}/dummy)
 
 #----------------- COMPILER VARIABLES -----------------
 # Architecture options to compiler.
-CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0_zbs2p0_zicbom_zicbopm_zicboz
+CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0_zbs2p0_zicbom_zicbop_zicboz
 # Optimization options to compiler.
 COPT ?= -O2
 # Additional options to compiler.
