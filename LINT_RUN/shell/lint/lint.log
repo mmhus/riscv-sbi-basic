@@ -1,7 +1,0 @@
-
-In /home/moiz/Desktop/riscv-sbi-basic/scripts/lint.sh line 61:
-  mkdir -p "$cpp_out_dir"
-            ^----------^ SC2154: cpp_out_dir is referenced but not assigned.
-
-For more information:
-  https://www.shellcheck.net/wiki/SC2154 -- cpp_out_dir is referenced but not...

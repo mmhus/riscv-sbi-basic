@@ -65,7 +65,7 @@ cpp_lint() {
   cpp_output_dir="$lint_output_local/cpplint/$j"
 
   mkdir -p "$cpp_output_dir"
-  cpplint --output=sed --linelength=160 --filter="$filters" "$1" >>"$cpp_output_dir/$j.sh" 2>&1
+  cpplint --output=sed --linelength=165 --filter="$filters" "$1" >>"$cpp_output_dir/$j.sh" 2>&1
 
   temp=$(wc -l "$cpp_output_dir/$j.sh" | awk '{ print $1 }')
   if [[ $temp -gt 0 ]]; then
@@ -218,7 +218,8 @@ if [[ $CPP_OPTION -eq 1 ]]; then
     -build/namespaces,
     -build/printf_format,
     -build/storage_class,
-    -readability/casting"
+    -readability/casting,
+    -legal/copyright"
 
   if ! [[ "$FILE_OPTION" == "0" ]]; then
     cfiles=$FILE_OPTION
