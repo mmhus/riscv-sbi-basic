@@ -40,19 +40,8 @@ scripts/setup.sh
 
 The script will:
 
-- init the spike isa simulator repo in `riscv-isa-sim`. The simulator must be build separately. See below on how to build spike
+- init the spike isa simulator repo in `riscv-isa-sim` and build it.
 - Download the latest pre-built RISC-V gcc toolchain from `toolchains.bootlin.com` of the `lp64d` ABI variety with uclibc as the c library. Rather than compiling the toolchain locally as it is faster to download a pre-built one. See,
 `toolchains.bootlin.com` to see details regarding the toolchain downloaded. The toolchain will be download as an archive and then extracted into `toolchain` folder
 - An export file with updated paths for the toolchain and spike iss will be generated, so that it can be sourced before using the Makefile.
 
-### Building spike
-
-To build spike, use the following instructions. Start in the `riscv-sbi-basic` repository directory and run the following bash commands:
-
-```bash
-cd riscv-isa-sim
-mkdir build
-cd build
-../configure --prefix=$RISCV
-make -j $(nproc)
-```
