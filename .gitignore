@@ -4,3 +4,4 @@
 **scripts/.local/
 **.tar*
 **toolchain
+**export.sh

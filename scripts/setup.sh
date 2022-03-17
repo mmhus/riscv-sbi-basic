@@ -46,7 +46,7 @@ if [[ ! -d "./build" ]]; then
   echo "export SPIKE=$SPIKE_PATH" >> "$EXPORT_PATH"
 fi
 cd ..
-echo "SPIKE_PATH=$SPIKE_PATH"
+echo "[I] SPIKE_PATH=$SPIKE_PATH"
 
 # Make source.sh executable
 chmod u+x "$EXPORT_PATH"
