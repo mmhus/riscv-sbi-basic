@@ -16,7 +16,7 @@ SPIKE_CMD ?=
 
 #----------------- ISS VARIABLES -----------------
 # Timeout
-TIMEOUT ?= 30s
+TIMEOUT ?= 5s
 TIMEOUT_CMD = timeout ${TIMEOUT}
 
 # Custom Library Directory
@@ -24,6 +24,7 @@ LIB_DIR := ""
 
 #----------------- INTERNAL VARIABLES -----------------
 CODE_DIR := ${MAKEFILE_DIR}/code
+RUN_DIR := ${MAKEFILE_DIR}/RUN
 COMPILE_DIR := ${MAKEFILE_DIR}/COMPILE
 ELF_FILE := ${COMPILE_DIR}/sbi.elf
 DIS_FILE := ${COMPILE_DIR}/sbi.asm
@@ -44,11 +45,11 @@ BASE_CFLAGS := \
 	-nostdlib \
 	-mcmodel=medany \
 	-fno-builtin \
-	-I${LIB_INCL} \
-	-I${ENV_INC} \
 	-g \
 	-ggdb \
-	-Wl,--entry=main
+	-Wl,--entry=_entry \
+	-I${LIB_INCL} \
+	-I${ENV_INC}
 
 DISASSEMBLY_FLAGS := \
 	--all-headers \
@@ -61,6 +62,12 @@ DISASSEMBLY_FLAGS := \
 	--show-raw-insn \
 	--source
 
+SPIKE_OPTIONS := \
+	--isa=rv64imafdcv \
+	-m0x80000000:0x100000 \
+	-p${NUM_HARTS} \
+	-l --log-commits
+
 #if given default LD
 LD_DEFAULT ?=
 LDFLAGS = -T${CODE_DIR}/linker.ld
@@ -68,7 +75,7 @@ LDFLAGS = -T${CODE_DIR}/linker.ld
 # Expansions
 COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@")
 DISM_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
-# ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE_CMD)")
+ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err")
 
 # Targets
 
@@ -104,10 +111,12 @@ compile: ${ELF_FILE} ${DIS_FILE}
 	@mv ${COMPILE_DIR}/failed.txt ${COMPILE_DIR}/passed.txt
 
 spike:
-	@mkdir -p "$(MAKEFILE_DIR)/RUN/"
-	$(SPIKE)/spike --isa=rv64imafdcv -l --log-commits ${ELF_FILE} 1> $(MAKEFILE_DIR)/RUN/$@.out 2> $(MAKEFILE_DIR)/RUN/$@.err
+	@mkdir -p "${RUN_DIR}"
+	@echo ${DISM_EXP} > ${COMPILE_DIR}/disassembly_cmd.sh
+	@chmod u+x ${COMPILE_DIR}/disassembly_cmd.sh
+	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err
 
 clean:
 	rm -rf $(MAKEFILE_DIR)/COMPILE
 	rm -rf $(MAKEFILE_DIR)/LINT_RESULTS
-	rm -rf $(MAKEFILE_DIR)/RUN
+	rm -rf ${RUN_DIR}

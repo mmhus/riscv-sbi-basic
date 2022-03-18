@@ -1,6 +1,6 @@
 .section .text
-.global reg_init
-reg_init:
+.global _entry
+_entry:
 li x1, 0
 li x2, 0
 li x3, 0
@@ -32,6 +32,8 @@ li x28, 0
 li x29, 0
 li x30, 0
 li x31, 0
+
+tail main
 
 .global main
 .weak main
