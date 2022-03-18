@@ -44,3 +44,9 @@ The script will:
 - ~~Download the latest pre-built RISC-V gcc toolchain from `toolchains.bootlin.com` of the `lp64d` ABI variety with uclibc as the c library. Rather than compiling the toolchain locally as it is faster to download a pre-built one. See,
 `toolchains.bootlin.com` to see details regarding the toolchain downloaded. The toolchain will be download as an archive and then extracted into `toolchain` folder~~. This is not working for now, temporarily, you can download the pre-built toolchain from google drive and place the file as is in the `riscv-sbi-basic` directory. Then run `scripts/setup.sh`
 - An export file with updated paths for the toolchain and spike iss will be generated, so that it can be sourced before using the Makefile.
+
+## Issues
+
+### GLIBC_2.34 not found
+
+Try and download a later version of glibc from `http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/` and install using `dpkg -i <name>.deb`:

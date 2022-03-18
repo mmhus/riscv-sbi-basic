@@ -104,7 +104,8 @@ compile: ${ELF_FILE} ${DIS_FILE}
 	@mv ${COMPILE_DIR}/failed.txt ${COMPILE_DIR}/passed.txt
 
 spike:
-	$(SPIKE)/spike --isa=rv64imafdcv -l --log-commits ${ELF_FILE} 1> $@.out 2> $@.err
+	@mkdir -p "$(MAKEFILE_DIR)/RUN/"
+	$(SPIKE)/spike --isa=rv64imafdcv -l --log-commits ${ELF_FILE} 1> $(MAKEFILE_DIR)/RUN/$@.out 2> $(MAKEFILE_DIR)/RUN/$@.err
 
 clean:
 	rm -rf $(MAKEFILE_DIR)/COMPILE

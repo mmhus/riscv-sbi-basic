@@ -41,7 +41,7 @@ cd "$SCRIPT_DIR/../riscv-isa-sim"
 if [[ ! -d "./build" ]]; then
   mkdir build
   cd build
-  ../configure
+  ../configure --enable-commitlog
   make -j $(nproc)
   cd ..
 fi
