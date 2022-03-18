@@ -7,14 +7,16 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RISC-V TOOLCHAIN
 RISCV_PATH=$(realpath "$SCRIPT_DIR/../toolchain")
 EXPORT_PATH=$(realpath "$SCRIPT_DIR/../export.sh")
-WGET_PATH="https://toolchains.bootlin.com/downloads/releases/toolchains/riscv64-lp64d/tarballs/riscv64-lp64d--uclibc--bleeding-edge-2021.11-1.tar.bz2"
+# WGET_PATH="https://toolchains.bootlin.com/downloads/releases/toolchains/riscv64-lp64d/tarballs/riscv64-lp64d--uclibc--bleeding-edge-2021.11-1.tar.bz2"
 
 echo "[I] RISCV=$RISCV_PATH"
 if [[ ! -d "$SCRIPT_DIR/../toolchain" ]]; then
   mkdir "$RISCV_PATH"
-  wget -nc "$WGET_PATH"
+  # wget -nc "$WGET_PATH"
   echo "[I] Extracting files, please wait ... "
-  tar -xjvf riscv64-lp64d--uclibc*.tar.bz2 -C "$RISCV_PATH" >> /dev/null
+  # tar -xjvf riscv64-lp64d--uclibc*.tar.bz2 -C "$RISCV_PATH" >> /dev/null
+  tar --lzma -xvf toolchain_binaries.tar.lzma -C "$RISCV_PATH" >> /dev/null
+
   echo "[I] Extraction Complete!"
 fi
 
