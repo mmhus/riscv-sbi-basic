@@ -112,7 +112,7 @@ spike:
 	@rm -f "${RUN_DIR}/spike.out"
 	@echo ${ISS_EXP} > ${RUN_DIR}/iss_cmd.sh
 	@chmod u+x ${RUN_DIR}/iss_cmd.sh
-	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err
+	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1>${RUN_DIR}/$@.out 2>${RUN_DIR}/$@.err
 
 clean:
 	rm -rf $(MAKEFILE_DIR)/COMPILE
