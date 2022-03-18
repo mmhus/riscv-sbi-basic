@@ -12,7 +12,7 @@
 # define REGBYTES 4
 #endif
 
-.extern main
+.extern _init
 
   .section ".text.init"
   .globl _entry
@@ -135,7 +135,7 @@ _entry:
   sll a2, a0, STKSHIFT
   add tp, tp, a2
 
-  j main
+  j _init
 
   .align 2
 trap_entry:
@@ -179,7 +179,7 @@ trap_entry:
   jal handle_trap
   csrw mepc, a0
 
-  # Remain in M-mode after eret
+  # Re_init in M-mode after eret
   li t0, MSTATUS_MPP
   csrs mstatus, t0
 
