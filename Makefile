@@ -8,18 +8,14 @@ CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0
 COPT ?= -O2
 # Additional options to compiler.
 CFLAGS ?=
-# Number of harts.
-NUM_HARTS ?= 1
-
-SPIKE_CMD ?= 
 
 #----------------- ISS VARIABLES -----------------
 # Timeout
 TIMEOUT ?= 5s
 TIMEOUT_CMD = timeout ${TIMEOUT}
 
-# Custom Library Directory
-LIB_DIR := ""
+# Number of harts.
+NUM_HARTS ?= 1
 
 #----------------- INTERNAL VARIABLES -----------------
 CODE_DIR := ${MAKEFILE_DIR}/code
