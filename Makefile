@@ -57,6 +57,7 @@ DISASSEMBLY_FLAGS := \
 	--show-raw-insn \
 	--source
 
+
 SPIKE_OPTIONS := \
 	--isa=rv64imafdcv \
 	-m0x80000000:0x100000 \
@@ -70,7 +71,7 @@ LDFLAGS = -T${CODE_DIR}/linker.ld
 # Expansions
 COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@")
 DISM_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
-ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err")
+ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1>${RUN_DIR}/$@.out 2>${RUN_DIR}/$@.err")
 
 # Targets
 
