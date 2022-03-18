@@ -73,7 +73,7 @@ static uintptr_t insn_len(uintptr_t pc)
 }
 
 #ifdef __riscv
-#include "encoding.h"
+#include "riscv_encoding.h"
 #endif
 
 #define stringify_1(s) #s
