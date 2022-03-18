@@ -1,6 +1,5 @@
 #----------------- MAKEFILE VARIABLES -----------------
 MAKEFILE_DIR := $(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-ENV_DIR = $(shell dirname ${dir ${SRCS}}/dummy)
 
 #----------------- COMPILER VARIABLES -----------------
 # Architecture options to compiler.
