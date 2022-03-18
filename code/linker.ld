@@ -1,20 +1,24 @@
 OUTPUT_ARCH( "riscv" )
-ENTRY(_start)
+ENTRY(_entry)
 
 SECTIONS
 {
+
+  /* text: test code section */
   . = 0x80000000;
-  __global_pointer$ = 0x80040000;
+  .text.init : { *(.text.init) }
 
-  PROVIDE (__TEXT_START = .);
-  .text : ALIGN(256) { 
-      *(.text.init) 
-      *(.text) *(.text.*) *(.device_code) . = ALIGN(256); . = 0x10000; }
-  PROVIDE (__TEXT_END = .);
+  . = ALIGN(0x1000);
+  .tohost : { *(.tohost) }
 
-  .tohost : { *(.tohost); . = 0x1000; }
-  .rodata : ALIGN(256) { *(.rodata) *(.rodata.*) }
-  .sdata  : ALIGN(256) {
+  . = ALIGN(0x1000);
+  .text : { *(.text) }
+
+  /* data segment */
+  .data : { *(.data) }
+
+  .sdata : {
+    __global_pointer$ = . + 0x800;
     *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata*)
     *(.sdata .sdata.* .gnu.linkonce.s.*)
   }
@@ -25,24 +29,20 @@ SECTIONS
     *(.scommon)
   }
   .bss : { *(.bss) }
-  
-  /* 
-    * thread-local data segment. 
-    * Copied to TCM<n> at start by init_tls().
-    */
-  .tdata : ALIGN(256) {
+
+  /* thread-local data segment */
+  .tdata :
+  {
     _tdata_begin = .;
-    *(.tls_start) *(.tdata) *(.tdata.*) 
+    *(.tdata)
     _tdata_end = .;
   }
   .tbss :
   {
-    *(.tbss) *(.tbss.*)
+    *(.tbss)
     _tbss_end = .;
   }
-  
-  /* data sections, mostly for host to deal with input and output data */
-  . = 0x80200000;
-  PROVIDE (__DATA_START = .);
-  .data : {LONG(0xabcdabcd) *(.data) }
+
+  /* End of uninitalized data segement */
+  _end = .;
 }
