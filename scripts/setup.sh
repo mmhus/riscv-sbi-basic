@@ -20,7 +20,7 @@ if [[ ! -d "$SCRIPT_DIR/../toolchain" ]]; then
   echo "[I] Extraction Complete!"
 fi
 
-TOOLCHAIN_BIN_PATH=$(find "$SCRIPT_DIR/.." -name "riscv64-linux-gcc")
+TOOLCHAIN_BIN_PATH=$(find "$SCRIPT_DIR/.." -name "riscv64-unknown-elf-gcc")
 # echo "[I] TOOLCHAIN_BIN_PATH=$TOOLCHAIN_BIN_PATH"
 
 TOOLCHAIN_BIN_PATH=$(dirname $TOOLCHAIN_BIN_PATH)
