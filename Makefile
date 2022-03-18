@@ -112,6 +112,8 @@ compile: ${ELF_FILE} ${DIS_FILE}
 
 spike:
 	@mkdir -p "${RUN_DIR}"
+	@rm -f "${RUN_DIR}/spike.err"
+	@rm -f "${RUN_DIR}/spike.out"
 	@echo ${DISM_EXP} > ${COMPILE_DIR}/disassembly_cmd.sh
 	@chmod u+x ${COMPILE_DIR}/disassembly_cmd.sh
 	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err
