@@ -4,7 +4,7 @@ ENV_DIR = $(shell dirname ${dir ${SRCS}}/dummy)
 
 #----------------- COMPILER VARIABLES -----------------
 # Architecture options to compiler.
-CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0_zbs2p0_zicbom_zicbop_zicboz
+CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0
 # Optimization options to compiler.
 COPT ?= -O2
 # Additional options to compiler.
@@ -48,7 +48,7 @@ BASE_CFLAGS := \
 	-I${ENV_INC} \
 	-g \
 	-ggdb \
-	-Wl,--entry=test_top
+	-Wl,--entry=main
 
 DISASSEMBLY_FLAGS := \
 	--all-headers \
@@ -100,7 +100,7 @@ ${DIS_FILE}: ${ELF_FILE}
 	@echo "riscv64-unknown-elf-gdb --exec=${realpath ${ELF_FILE}} --symbols=${realpath ${ELF_FILE}}" >> ${COMPILE_DIR}/run_gdb.sh.sh
 
 compile: ${ELF_FILE} ${DIS_FILE}
-	touch ${COMPILE_DIR}/failed.txt
+	@touch ${COMPILE_DIR}/failed.txt
 	@mv ${COMPILE_DIR}/failed.txt ${COMPILE_DIR}/passed.txt
 
 spike:
