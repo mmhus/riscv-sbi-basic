@@ -12,6 +12,8 @@
 # define REGBYTES 4
 #endif
 
+.extern main
+
   .section ".text.init"
   .globl _entry
 _entry:
@@ -133,7 +135,7 @@ _entry:
   sll a2, a0, STKSHIFT
   add tp, tp, a2
 
-  j _init
+  j main
 
   .align 2
 trap_entry:
