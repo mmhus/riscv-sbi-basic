@@ -3,8 +3,6 @@
 #ifndef RISCV_CSR_ENCODING_H
 #define RISCV_CSR_ENCODING_H
 
-#include <stdint.h>
-
 #ifndef __riscv_xlen
 #define __riscv_xlen 64
 #endif
@@ -283,11 +281,11 @@
 #define TMEXTTRIGGER_SELECT         (0xf << 6)
 #define TMEXTTRIGGER_ACTION         (0xf << 0)
 
-#define TMEXTTRIGGER_ACTION_OFFSET   (uint64_t)0
-#define TMEXTTRIGGER_SELECT_OFFSET   (uint64_t)6
+#define TMEXTTRIGGER_ACTION_OFFSET   0ull
+#define TMEXTTRIGGER_SELECT_OFFSET   6ull
 
-#define TMEXTTRIGGER_TRIGGER_INPUT_0 (uint64_t)0b0001
-#define TMEXTTRIGGER_TRIGGER_INPUT_1 (uint64_t)0b0010
+#define TMEXTTRIGGER_TRIGGER_INPUT_0 0b0001ull
+#define TMEXTTRIGGER_TRIGGER_INPUT_1 0b0010ull
 
 #define MENVCFG_FIOM        0x0000000000000001
 #define MENVCFG_CBIE        0x0000000000000030
@@ -444,33 +442,33 @@
 #define HPM_EVENT_PRU_RETIRE_EVENT      0x34
 #define HPM_EVENT_HW_NO_EVENT           0x00
 
-#define CNT_OVF_ACTION_NONE          (uint64_t)0b00
-#define CNT_OVF_ACTION_TRIG_0        (uint64_t)0b01
-#define CNT_OVF_ACTION_TRIG_1        (uint64_t)0b10
+#define CNT_OVF_ACTION_NONE          0b00ull
+#define CNT_OVF_ACTION_TRIG_0        0b01ull
+#define CNT_OVF_ACTION_TRIG_1        0b10ull
 
-#define EXT_TRIGGER_NONE             (uint64_t)0b000
-#define EXT_TRIGGER_OVERFLOW_0       (uint64_t)0b001
-#define EXT_TRIGGER_OVERFLOW_1       (uint64_t)0b010
-#define EXT_TRIGGER_DEBUG_0          (uint64_t)0b100
-#define EXT_TRIGGER_DEBUG_1          (uint64_t)0b101
+#define EXT_TRIGGER_NONE             0b000ull
+#define EXT_TRIGGER_OVERFLOW_0       0b001ull
+#define EXT_TRIGGER_OVERFLOW_1       0b010ull
+#define EXT_TRIGGER_DEBUG_0          0b100ull
+#define EXT_TRIGGER_DEBUG_1          0b101ull
 
-#define HPC_ACTIVE                   (uint64_t)0
-#define HPC_INACTIVE                 (uint64_t)1
+#define HPC_ACTIVE                   0ull
+#define HPC_INACTIVE                 1ull
 
 /* mhpmevent# registers */
-#define MHPMEVENT_SELECT_OFFSET      (uint64_t)0
-#define MHPMEVENT_FILTER_OFFSET      (uint64_t)8
-#define MHPMEVENT_TYPE_OFFSET        (uint64_t)16
-#define MHPMEVENT_INACTIVE_OFFSET    (uint64_t)31
-#define MHPMEVENT_OVF_ACTION_OFFSET  (uint64_t)32
-#define MHPMEVENT_STOP_EVENT_OFFSET  (uint64_t)34
-#define MHPMEVENT_START_EVENT_OFFSET (uint64_t)37
-#define MHPMEVENT_VUINH_OFFSET       (uint64_t)58
-#define MHPMEVENT_VSINH_OFFSET       (uint64_t)59
-#define MHPMEVENT_UINH_OFFSET        (uint64_t)60
-#define MHPMEVENT_SINH_OFFSET        (uint64_t)61
-#define MHPMEVENT_MINH_OFFSET        (uint64_t)62
-#define MHPMEVENT_OF_OFFSET          (uint64_t)63
+#define MHPMEVENT_SELECT_OFFSET      0ull
+#define MHPMEVENT_FILTER_OFFSET      8ull
+#define MHPMEVENT_TYPE_OFFSET        16ull
+#define MHPMEVENT_INACTIVE_OFFSET    31ull
+#define MHPMEVENT_OVF_ACTION_OFFSET  32ull
+#define MHPMEVENT_STOP_EVENT_OFFSET  34ull
+#define MHPMEVENT_START_EVENT_OFFSET 37ull
+#define MHPMEVENT_VUINH_OFFSET       58ull
+#define MHPMEVENT_VSINH_OFFSET       59ull
+#define MHPMEVENT_UINH_OFFSET        60ull
+#define MHPMEVENT_SINH_OFFSET        61ull
+#define MHPMEVENT_MINH_OFFSET        62ull
+#define MHPMEVENT_OF_OFFSET          63ull
 
 #define MHPMEVENT_INACTIVE           (1ULL << MHPMEVENT_INACTIVE_OFFSET)
 #define MHPMEVENT_VUINH              (1ULL << MHPMEVENT_VUINH_OFFSET)
@@ -643,7 +641,7 @@
 #define read_csr(reg) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrr %0, " #reg : "=r"(__tmp)); \
     __tmp; \
   }) \
@@ -657,7 +655,7 @@
 #define swap_csr(reg, val) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrrw %0, " #reg ", %1" : "=r"(__tmp) : "rK"(val)); \
     __tmp; \
   }) \
@@ -665,7 +663,7 @@
 #define set_csr(reg, bit) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrrs %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
     __tmp; \
   }) \
@@ -673,7 +671,7 @@
 #define clear_csr(reg, bit) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrrc %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
     __tmp; \
   }) \
@@ -2411,7 +2409,7 @@
 #define read_csr_define(reg) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrr %0, " xstr(reg) : "=r"(__tmp)); \
     __tmp; \
   }) \
@@ -2425,7 +2423,7 @@
 #define set_csr_define(reg, bit) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrrs %0, " xstr(reg) ", %1" : "=r"(__tmp) : "rK"(bit)); \
   __tmp; \
   }) \
@@ -2433,7 +2431,7 @@
 #define clear_csr_define(reg, bit) \
   __extension__ \
   ({ \
-    uint64_t __tmp; \
+    unsigned long long __tmp; \
     asm volatile ("csrrc %0, " xstr(reg) ", %1" : "=r"(__tmp) : "rK"(bit)); \
     __tmp; \
   }) \
