@@ -12,7 +12,7 @@ CFLAGS ?=
 #----------------- ISS VARIABLES -----------------
 # Timeout
 TIMEOUT ?= 5s
-TIMEOUT_CMD = timeout ${TIMEOUT}
+TIMEOUT_CMD = timeout --preserve-status --foreground ${TIMEOUT}
 
 # Number of harts.
 NUM_HARTS ?= 1
@@ -112,7 +112,7 @@ spike:
 	@rm -f "${RUN_DIR}/spike.out"
 	@echo ${ISS_EXP} > ${RUN_DIR}/iss_cmd.sh
 	@chmod u+x ${RUN_DIR}/iss_cmd.sh
-	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1>${RUN_DIR}/$@.out 2>${RUN_DIR}/$@.err
+	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1>${RUN_DIR}/$@.err 2>${RUN_DIR}/$@.out
 
 clean:
 	rm -rf $(MAKEFILE_DIR)/COMPILE
