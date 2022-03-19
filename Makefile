@@ -57,7 +57,6 @@ DISASSEMBLY_FLAGS := \
 	--show-raw-insn \
 	--source
 
-
 SPIKE_OPTIONS := \
 	--isa=rv64imafdcv \
 	-m0x80000000:0x100000 \
