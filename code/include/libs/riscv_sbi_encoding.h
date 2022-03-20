@@ -7,9 +7,9 @@
 
 /** 
  * Table 1. Standard SBI Errors
- * Error_Type            Value
+ *      Error_Type                Value
  */
-#define SBI_SUCCESS               0
+#define SBI_SUCCESS                0
 #define SBI_ERR_FAILED            -1
 #define SBI_ERR_NOT_SUPPORTED     -2
 #define SBI_ERR_INVALID_PARAM     -3
