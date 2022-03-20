@@ -70,7 +70,7 @@ LDFLAGS = -T${CODE_DIR}/linker.ld
 # Expansions
 COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@")
 DISM_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
-ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1>${RUN_DIR}/$@.out 2>${RUN_DIR}/$@.err")
+ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err")
 
 # Targets
 
@@ -111,7 +111,7 @@ spike:
 	@rm -f "${RUN_DIR}/spike.out"
 	@echo ${ISS_EXP} > ${RUN_DIR}/iss_cmd.sh
 	@chmod u+x ${RUN_DIR}/iss_cmd.sh
-	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1>${RUN_DIR}/$@.err 2>${RUN_DIR}/$@.out
+	${TIMEOUT_CMD} ${SPIKE}/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.err 2> ${RUN_DIR}/$@.out
 
 clean:
 	rm -rf $(MAKEFILE_DIR)/COMPILE
