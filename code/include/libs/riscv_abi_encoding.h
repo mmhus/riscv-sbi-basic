@@ -26,8 +26,12 @@
     "addi a0, a0, %lo("xstr(symbol)")" \
   );
 
-/* > 32-bit address ranges */
+/* > 32-bit address ranges, MCMODEL_MEDANY */
 #else
+  #ifndef MCMODEL_MEDANY
+    #define MCMODEL_MEDANY
+  #endif
+  
   // Load value from a symbol
   #define LOAD_VALUE_SYMBOL(symbol)         \
   asm volatile(                             \
