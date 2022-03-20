@@ -3,6 +3,7 @@
 #ifndef RISCV_SBI_ENCODING_H
 #define RISCV_SBI_ENCODING_H
 
+#include "riscv_abi_encoding.h"
 
 /** 
  * Table 1. Standard SBI Errors

@@ -48,7 +48,7 @@
   #define LOAD_ADDRESS_SYMBOL(symbol)       \
   asm volatile(                             \
     "2:;"                                   \
-    "auipc a0, %pcrel_hi("xstr(symbol)");"  \  
+    "auipc a0, %pcrel_hi("xstr(symbol)");"  \
     "addi a0, a0, %pcrel_lo(2b)"            \
   );
 #endif
