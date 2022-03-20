@@ -45,6 +45,24 @@ The script will:
 `toolchains.bootlin.com` to see details regarding the toolchain downloaded. The toolchain will be download as an archive and then extracted into `toolchain` folder~~. This is not working for now, temporarily, you can download the pre-built toolchain from google drive and place the file as is in the `riscv-sbi-basic` directory. Then run `scripts/setup.sh`
 - An export file with updated paths for the toolchain and spike iss will be generated, so that it can be sourced before using the Makefile.
 
+### Compiling
+
+Use to terminal to navigate to the `riscv-sbi-basic` directory, and run the following commands in the terminal. Sourcing is required only once per teriminal session:
+
+```bash
+source export.sh
+make
+```
+
+### Running ELF on Spike ISS
+
+Use to terminal to navigate to the `riscv-sbi-basic` directory, and run the following commands in the terminal. Sourcing is required only once per teriminal session:
+
+```bash
+source export.sh
+make spike
+```
+
 ## Issues
 
 ### GLIBC_2.34 not found
