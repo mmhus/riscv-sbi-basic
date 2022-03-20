@@ -32,7 +32,7 @@ and does not need to be installed.
 
 ### Run Script
 
-Run the following script:
+Run the following script inside the `riscv-sbi-basic` directory:
 
 ```bash
 scripts/setup.sh
