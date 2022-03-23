@@ -2,7 +2,7 @@
 
 ## Prequisites
 
-- [ ] Did you run lint -sf `filename` on your changes, if you are commiting a .c file?
+- [ ] Did you run lint -cf `filename` on your changes, if you are commiting a .c file?
 - [ ] Did you run lint -sf `filename` on your changes, if you are commiting a .sh file?
 
 ## Description
