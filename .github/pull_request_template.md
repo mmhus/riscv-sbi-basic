@@ -4,7 +4,8 @@
 
 - [ ] Did you run lint -cf `filename` on your changes, if you are commiting a .c file?
 - [ ] Did you run lint -sf `filename` on your changes, if you are commiting a .sh file?
-- [ ] Did you related issue number in the description
+- [ ] Does your code compile properly using `make`?
+- [ ] Did you related issue number in the description?
 
 ## Description
 
