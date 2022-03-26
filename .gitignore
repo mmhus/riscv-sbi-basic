@@ -1,5 +1,5 @@
 **LINT_RUN*
-**LINT_COMPILE*
+**LINT_RESULTS*
 **COMPILE*
 **.vscode
 **scripts/.local/
