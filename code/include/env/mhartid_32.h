@@ -1,0 +1,8 @@
+#ifndef RISCV_MHARTID_H
+#define RISCV_MHARTID_H
+
+#define MHARTID_HART_ID_SHIFT 0
+
+#define MHARTID_HART_ID_MASK  0xFFFFFFFFull
+
+#endif
