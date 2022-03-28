@@ -38,4 +38,3 @@
 #define MSTATUS_SD_MASK    0x80000000ull
 
 #endif
-
