@@ -5,4 +5,4 @@
 
 #define MARCHID_ARCHITECTURE_ID 0xFFFFFFFFFFFFFFFFull
 
-#endif /* RISCV_MARCHID_H */
+#endif  /* RISCV_MARCHID_H */
