@@ -5,6 +5,17 @@
 Implement the RISC-V SBI spec on Spike. More simulator/emulators to come later.
 Eventually port to hardware. It's a learning experience.
 
+### Some Loose Goals
+
+1. Write all functions for SBI extensions
+2. Test all functions for SBI extensions
+3. Add a device tree file for spike
+4. Make spike boot with our firmware
+5. Build linux kernel for spike manually
+6. Make spike run our own linux kernel
+7. Add platform specific code for differentiation
+8. Add linux driver for platform specific components
+
 ## Requirements
 
 ### Linux Distributions
