@@ -73,9 +73,3 @@ Use to terminal to navigate to the `riscv-sbi-basic` directory, and run the foll
 source export.sh
 make spike
 ```
-
-## Issues
-
-### GLIBC_2.34 not found
-
-Try and download a later version of glibc from `http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/` and install using `dpkg -i <name>.deb`:
