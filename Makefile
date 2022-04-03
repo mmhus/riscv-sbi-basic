@@ -1,5 +1,6 @@
 #----------------- MAKEFILE VARIABLES -----------------
 MAKEFILE_DIR := $(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+TEST_DIR ?=
 
 #----------------- COMPILER VARIABLES -----------------
 # Architecture options to compiler.
@@ -16,13 +17,17 @@ TIMEOUT_CMD = timeout --preserve-status --foreground ${TIMEOUT}
 
 # Number of harts.
 NUM_HARTS ?= 1
-
 #----------------- INTERNAL VARIABLES -----------------
 CODE_DIR := ${MAKEFILE_DIR}/code
 RUN_DIR := ${MAKEFILE_DIR}/RUN
 COMPILE_DIR := ${MAKEFILE_DIR}/COMPILE
 ELF_FILE := ${COMPILE_DIR}/sbi.elf
 DIS_FILE := ${COMPILE_DIR}/sbi.asm
+
+SBI_INCL := $(CODE_DIR)/include/sbi_headers
+SBI_SRCS := \
+	$(wildcard $(CODE_DIR)/sbi_srcs/*.c) \
+	$(wildcard $(CODE_DIR)/sbi_srcs/*.S)
 
 LIB_INCL := $(CODE_DIR)/include/libs
 LIB_SRCS := \
@@ -34,6 +39,11 @@ ENV_SRCS := \
 	$(wildcard $(CODE_DIR)/src/env/*.c) \
 	$(wildcard $(CODE_DIR)/src/env/*.S)
  
+TEST_INCL := $(CODE_DIR)/include/test_headers
+TEST_SRCS := \
+	$(wildcard $(TEST_DIR)/*.c) \
+	$(wildcard $(TEST_DIR)/*.S)
+
 BASE_CFLAGS := \
 	-Werror \
 	-ffreestanding \
@@ -44,7 +54,9 @@ BASE_CFLAGS := \
 	-ggdb \
 	-Wl,--entry=_entry \
 	-I${LIB_INCL} \
-	-I${ENV_INC}
+	-I${ENV_INCL}	\
+	-I${SBI_INCL}	\
+	-I${TEST_INCL}
 
 DISASSEMBLY_FLAGS := \
 	--all-headers \
@@ -68,7 +80,7 @@ LD_DEFAULT ?=
 LDFLAGS = -T${CODE_DIR}/linker.ld
 
 # Expansions
-COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@")
+COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${TEST_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${SBI_SRCS} ${LDFLAGS} -o $@")
 DISM_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
 ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err")
 
@@ -79,15 +91,27 @@ ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIK
 default: compile
 
 setup:
-	mkdir -p ${COMPILE_DIR}
-	@echo "CMP_DIR : "${COMPILE_DIR}
-	@echo "ELF_FILE: "${ELF_FILE}
-	@echo "DIS_FILE: "${DIS_FILE}
-	@echo "ENV_INCL: "${ENV_INCL}
-	@echo "ENV_SRCS: "${ENV_SRCS}
-	@echo "LIB_INCL: "${LIB_INCL}
-	@echo "LIB_SRCS: "${LIB_SRCS}
-	@echo "LDFLAGS : "${LDFLAGS}
+	@mkdir -p ${COMPILE_DIR}
+	@echo ""
+	@echo "TEST_DIR : "${TEST_DIR}
+	@echo "CMP_DIR  : "${COMPILE_DIR}
+	@echo "ELF_FILE : "${ELF_FILE}
+	@echo "DIS_FILE : "${DIS_FILE}
+	@echo "RUN_DIR  : "${RUN_DIR}
+	@echo ""
+	@echo "LIB_INCL : "${LIB_INCL}
+	@echo "ENV_INCL : "${ENV_INCL}
+	@echo "SBI_INCL : "${SBI_INCL}
+	@echo "TEST_INCL: "${TEST_INCL}
+	@echo ""
+	@echo "SBI_SRCS : "${SBI_SRCS}
+	@echo "ENV_SRCS : "${ENV_SRCS}
+	@echo "LIB_SRCS : "${LIB_SRCS}
+	@echo "TEST_SRCS: "${TEST_SRCS}
+	@echo ""
+	@echo "LDFLAGS  : "${LDFLAGS}
+	@echo "CFLAGS   : "${CFLAGS}
+	@echo ""
 
 ${ELF_FILE}: setup ${SRCS}
 	@echo ${COMPILE_EXP} > ${COMPILE_DIR}/compile_cmd.sh
