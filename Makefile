@@ -5,7 +5,7 @@ MAKEFILE_DIR := $(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 # Architecture options to compiler.
 CARCH ?= -march=rv64gc_zba2p0_zbb2p0_zbc2p0
 # Optimization options to compiler.
-COPT ?= -O2
+COPT ?= -O0
 # Additional options to compiler.
 CFLAGS ?=
 
