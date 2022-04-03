@@ -1,6 +1,5 @@
 #ifndef RISCV_MTIME_H
 #define RISCV_MTIME_H
 
-#define MTIME_MAX_VALUE     63
-
+#define MTIME_MAX_VALUE 0xFFFFFFFFFFFFFFFFull
 #endif  /* RISCV_MTIME_H */
