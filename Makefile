@@ -26,8 +26,8 @@ DIS_FILE := ${COMPILE_DIR}/sbi.asm
 
 SBI_INCL := $(CODE_DIR)/include/sbi_headers
 SBI_SRCS := \
-	$(wildcard $(CODE_DIR)/sbi_srcs/*.c) \
-	$(wildcard $(CODE_DIR)/sbi_srcs/*.S)
+	$(wildcard $(CODE_DIR)/src/sbi_srcs/*.c) \
+	$(wildcard $(CODE_DIR)/src/sbi_srcs/*.S)
 
 LIB_INCL := $(CODE_DIR)/include/libs
 LIB_SRCS := \
