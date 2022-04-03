@@ -1,0 +1,9 @@
+#ifndef RISCV_MSTATUS_H
+#define RISCV_MSTATUS_H
+
+#define MSTATUS_SIE_SHIFT 1
+
+
+#define MSTATUS_SIE_MASK 0x0000000000000002ull
+
+#endif /* RISCV_MSTATUS_H */
