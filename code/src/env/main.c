@@ -1,22 +1,16 @@
 #include "test_macros.h"
 
 /**
- * @brief pure virtual test_case function for test cases
- * 
- * @return int 
- */
-__attribute__((weak))
-int test_case (void) {}
-
-/**
  * @brief test_case wrapper to return to m-mode
  * 
  * @return int 
  */
 int run_test(void) {
-  switch_to_S_mode();
+  write_csr(mtvec, &m_mode_trap);
+  write_csr(stvec, &s_mode_trap);
+  asm volatile("ecall");  // Switch to S-mode
   int retval = test_case();
-  asm volatile("ecall");
+  asm volatile("ecall");  // Return to M-mode
 }
 
 /**

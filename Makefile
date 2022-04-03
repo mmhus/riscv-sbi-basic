@@ -38,11 +38,12 @@ ENV_INCL := $(CODE_DIR)/include/env
 ENV_SRCS := \
 	$(wildcard $(CODE_DIR)/src/env/*.c) \
 	$(wildcard $(CODE_DIR)/src/env/*.S)
- 
+
+	FULL_TEST_DIR_PATH := $(abspath $(TEST_DIR))
 TEST_INCL := $(CODE_DIR)/include/test_headers
 TEST_SRCS := \
-	$(wildcard $(TEST_DIR)/*.c) \
-	$(wildcard $(TEST_DIR)/*.S)
+	$(wildcard $(FULL_TEST_DIR_PATH)/*.c) \
+	$(wildcard $(FULL_TEST_DIR_PATH)/*.S)
 
 BASE_CFLAGS := \
 	-Werror \
@@ -80,7 +81,7 @@ LD_DEFAULT ?=
 LDFLAGS = -T${CODE_DIR}/linker.ld
 
 # Expansions
-COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${TEST_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${SBI_SRCS} ${LDFLAGS} -o $@")
+COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${TEST_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${SBI_SRCS} ${LDFLAGS} -o $@")
 DISM_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
 ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err")
 
@@ -116,7 +117,7 @@ setup:
 ${ELF_FILE}: setup ${SRCS}
 	@echo ${COMPILE_EXP} > ${COMPILE_DIR}/compile_cmd.sh
 	@chmod u+x ${COMPILE_DIR}/compile_cmd.sh
-	$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${FRAMEWORK_SRCS} ${COMMON_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${LDFLAGS} -o $@
+	$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${TEST_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${SBI_SRCS} ${LDFLAGS} -o $@
 
 ${DIS_FILE}: ${ELF_FILE}
 	@echo ${DISM_EXP} > ${COMPILE_DIR}/disassembly_cmd.sh
