@@ -1,8 +1,6 @@
 #ifndef RISCV_MTIME_H
 #define RISCV_MTIME_H
 
-#define MTIME_MTIME_ID      0
-
-#define MTIME_MTIME_MASK    0xFFFFFFFFFFFFFFFFull
+#define MTIME_MAX_VALUE     63
 
 #endif  /* RISCV_MTIME_H */
