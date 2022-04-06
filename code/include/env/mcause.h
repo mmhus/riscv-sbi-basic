@@ -4,7 +4,38 @@
 #define MCAUSE_EXCEPTION_SHIFT 0
 #define MCAUSE_INTERRUPT_SHIFT 31
 
-#define MCAUSE_EXCEPTION_MASK 0xFFFFFFF1ull
-#define MCAUSE_INTERRUPT_MASK 0x80000000ull
+
+#define MCAUSE_I_Supervisor_software_interrupt 0x00000001ull
+#define MCAUSE_I_Virtual_supervisor_software_interrupt 0x00000002ull
+#define MCAUSE_I_Machine_software_interrupt 0x00000004ull
+#define MCAUSE_I_Supervisor_timer_interrupt 0x00000010ull
+#define MCAUSE_I_Virtual_supervisor_timer_interrupt 0x00000020ull
+#define MCAUSE_I_Machine_timer_interrupt 0x000000400ull
+#define MCAUSE_I_Supervisor_external_interrupt 0x00000100ull
+#define MCAUSE_I_Virtual_supervisor_external_interrupt 0x00000200ull
+#define MCAUSE_I_Machine_external_interrupt 0x00000400ull
+#define MCAUSE_I_Supervisor_guest_external_interrupt 0x00000800ull
+
+
+#define MCAUSE_E_Instruction_address_misaligned 0x00000000ull
+#define MCAUSE_E_Instruction_access_fault 0x00000001ull
+#define MCAUSE_E_Illegal_instruction 0x00000002ull
+#define MCAUSE_E_Breakpoint 0x00000004ull
+#define MCAUSE_E_Load_address_misaligned 0x00000008ull
+#define MCAUSE_E_Load_access_fault 0x00000010ull
+#define MCAUSE_E_Store/AMO_address_misaligned 0x00000020ull
+#define MCAUSE_E_Store/AMO_access_fault 0x00000040ull
+#define MCAUSE_E_Environment_call_from_U-mode_or_VU-mode 0x00000080ull
+#define MCAUSE_E_Environment_call_from_HS-mode 0x00000100ull
+#define MCAUSE_E_Environment_call_from_VS-mode 0x00000200ull
+#define MCAUSE_E_Environment_call_from_M-mode 0x00000400ull
+#define MCAUSE_E_Instruction_page_fault 0x00000800ull
+#define MCAUSE_E_Load_page_fault 0x00001000ull
+#define MCAUSE_E_Store/AMO_page_fault 0x00004000ull
+#define MCAUSE_E_Instruction_guest-page_fault 0x00080000ull
+#define MCAUSE_E_Load_guest-page_fault 0x00100000ull
+#define MCAUSE_E_Virtual_instruction 0x00200000ull
+#define MCAUSE_E_Store/AMO_guest-page_fault 0x00400000ull
+
 
 #endif /* RISCV_MCOUNTEREN_H */
