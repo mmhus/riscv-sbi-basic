@@ -24,7 +24,5 @@ void s_mode_trap(void) {
 int test_case(void) {
   asm volatile(".word 0xFFFFFFFF");  //illegal instruction
 
-  // end_test = true;
-  // return TEST_PASS;
   END_TEST(TEST_PASS);
 }
