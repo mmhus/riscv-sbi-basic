@@ -1,0 +1,6 @@
+#ifndef RISCV_MARCHID_H
+#define RISCV_MARCHID_H
+
+#define MARCHID_NOT_IMPLEMENTED 0
+
+#endif  /* RISCV_MARCHID_H */

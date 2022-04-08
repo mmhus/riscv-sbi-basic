@@ -2,40 +2,40 @@
 #define RISCV_MCAUSE_H
 
 #define MCAUSE_EXCEPTION_SHIFT 0
-#define MCAUSE_INTERRUPT_SHIFT 31
+#define MCAUSE_INTERRUPT_SHIFT 31 // MCAUSE is a register of fixed length (32 bits)
 
 
-#define MCAUSE_I_Supervisor_software_interrupt 0x00000001ull
-#define MCAUSE_I_Virtual_supervisor_software_interrupt 0x00000002ull
-#define MCAUSE_I_Machine_software_interrupt 0x00000004ull
-#define MCAUSE_I_Supervisor_timer_interrupt 0x00000010ull
-#define MCAUSE_I_Virtual_supervisor_timer_interrupt 0x00000020ull
-#define MCAUSE_I_Machine_timer_interrupt 0x000000400ull
-#define MCAUSE_I_Supervisor_external_interrupt 0x00000100ull
-#define MCAUSE_I_Virtual_supervisor_external_interrupt 0x00000200ull
-#define MCAUSE_I_Machine_external_interrupt 0x00000400ull
-#define MCAUSE_I_Supervisor_guest_external_interrupt 0x00000800ull
+#define MCAUSE_I_SUPERVISOR_SOFTWARE_INTERRUPT              0x00000001ull
+#define MCAUSE_I_VIRTUAL_SUPERVISOR_SOFTWARE_INTERRUPT      0x00000002ull
+#define MCAUSE_I_MACHINE_SOFTWARE_INTERRUPT                 0x00000004ull
+#define MCAUSE_I_SUPERVISOR_TIMER_INTERRUPT                 0x00000010ull
+#define MCAUSE_I_VIRTUAL_SUPERVISOR_TIMER_INTERRUPT         0x00000020ull
+#define MCAUSE_I_MACHINE_TIMER_INTERRUPT                    0x000000400ull
+#define MCAUSE_I_SUPERVISOR_EXTERNAL_INTERRUPT              0x00000100ull
+#define MCAUSE_I_VIRTUAL_SUPERVISOR_EXTERNAL_INTERRUPT      0x00000200ull
+#define MCAUSE_I_MACHINE_EXTERNAL_INTERRUPT                 0x00000400ull
+#define MCAUSE_I_SUPERVISOR_GUEST_EXTERNAL_INTERRUPT        0x00000800ull
 
 
-#define MCAUSE_E_Instruction_address_misaligned 0x00000000ull
-#define MCAUSE_E_Instruction_access_fault 0x00000001ull
-#define MCAUSE_E_Illegal_instruction 0x00000002ull
-#define MCAUSE_E_Breakpoint 0x00000004ull
-#define MCAUSE_E_Load_address_misaligned 0x00000008ull
-#define MCAUSE_E_Load_access_fault 0x00000010ull
-#define MCAUSE_E_Store/AMO_address_misaligned 0x00000020ull
-#define MCAUSE_E_Store/AMO_access_fault 0x00000040ull
-#define MCAUSE_E_Environment_call_from_U-mode_or_VU-mode 0x00000080ull
-#define MCAUSE_E_Environment_call_from_HS-mode 0x00000100ull
-#define MCAUSE_E_Environment_call_from_VS-mode 0x00000200ull
-#define MCAUSE_E_Environment_call_from_M-mode 0x00000400ull
-#define MCAUSE_E_Instruction_page_fault 0x00000800ull
-#define MCAUSE_E_Load_page_fault 0x00001000ull
-#define MCAUSE_E_Store/AMO_page_fault 0x00004000ull
-#define MCAUSE_E_Instruction_guest-page_fault 0x00080000ull
-#define MCAUSE_E_Load_guest-page_fault 0x00100000ull
-#define MCAUSE_E_Virtual_instruction 0x00200000ull
-#define MCAUSE_E_Store/AMO_guest-page_fault 0x00400000ull
+#define MCAUSE_E_INSTRUCTION_ADDRESS_MISALIGNED             0x00000000ull
+#define MCAUSE_E_INSTRUCTION_ACCESS_FAULT                   0x00000001ull
+#define MCAUSE_E_ILLEGAL_INSTRUCTION                        0x00000002ull
+#define MCAUSE_E_BREAKPOINT                                 0x00000004ull
+#define MCAUSE_E_LOAD_ADDRESS_MISALIGNED                    0x00000008ull
+#define MCAUSE_E_LOAD_ACCESS_FAULT                          0x00000010ull
+#define MCAUSE_E_STORE_AMO_ADDRESS_MISALIGNED               0x00000020ull
+#define MCAUSE_E_STORE_AMO_ACCESS_FAULT                     0x00000040ull
+#define MCAUSE_E_ENVIRONMENT_CALL_FROM_U_MODE_OR_VU_MODE    0x00000080ull
+#define MCAUSE_E_ENVIRONMENT_CALL_FROM_HS_MODE              0x00000100ull
+#define MCAUSE_E_ENVIRONMENT_CALL_FROM_VS_MODE              0x00000200ull
+#define MCAUSE_E_ENVIRONMENT_CALL_FROM_M_MODE               0x00000400ull
+#define MCAUSE_E_INSTRUCTION_PAGE_FAULT                     0x00000800ull
+#define MCAUSE_E_LOAD_PAGE_FAULT                            0x00001000ull
+#define MCAUSE_E_STORE_AMO_PAGE_FAULT                       0x00004000ull
+#define MCAUSE_E_INSTRUCTION_GUEST_PAGE_FAULT               0x00080000ull
+#define MCAUSE_E_LOAD_GUEST_PAGE_FAULT                      0x00100000ull
+#define MCAUSE_E_VIRTUAL_INSTRUCTION                        0x00200000ull
+#define MCAUSE_E_STORE_AMO_GUEST_PAGE_FAULT                 0x00400000ull
 
 
 #endif /* RISCV_MCOUNTEREN_H */
