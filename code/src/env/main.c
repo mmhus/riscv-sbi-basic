@@ -5,7 +5,7 @@
  * 
  * @return int 
  */
-int run_test(void) {
+int run(void) {
   write_csr(mtvec, &m_mode_trap);
   write_csr(stvec, &s_mode_trap);
   asm volatile("ecall");  // Switch to S-mode
@@ -30,6 +30,6 @@ void enable_pmp(void) {
  */
 int main(void) {
   enable_pmp();
-  int retval = run_test();
+  int retval = run();
   return retval;
 }
