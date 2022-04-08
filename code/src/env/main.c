@@ -1,6 +1,9 @@
-#include "test_macros.h"
 #include "fw_macros.h"
 #include "fw_func.h"
+
+#ifdef DEBUG
+  #include "test_macros.h"
+#endif
 
 extern void _m_trap_handler(void);
 void setup(void);

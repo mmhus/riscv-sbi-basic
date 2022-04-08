@@ -166,8 +166,8 @@ _m_trap_handler_exceptions:
   LOAD_SP    t2,   4*REG_SIZE(sp)
   LOAD_SP    s0,   5*REG_SIZE(sp)
   LOAD_SP    s1,   6*REG_SIZE(sp)
-  LOAD_SP    a0,   7*REG_SIZE(sp)
-  LOAD_SP    a1,   8*REG_SIZE(sp)
+  # LOAD_SP    a0,   7*REG_SIZE(sp) # Don't change for now 
+  # LOAD_SP    a1,   8*REG_SIZE(sp) # Don't change for now
   LOAD_SP    a2,   9*REG_SIZE(sp)
   LOAD_SP    a3,  10*REG_SIZE(sp)
   LOAD_SP    a4,  11*REG_SIZE(sp)

@@ -3,8 +3,7 @@
 
 // ============================ INCLUDES ===============================
 
-#include "riscv_abi_encoding.h"
-#include "riscv_sbi_encoding.h"
+#include "sbi_common.h"
 #include "riscv_encoding.h"
 #include "fw_macros.h"
 

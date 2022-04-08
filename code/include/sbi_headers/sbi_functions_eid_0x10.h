@@ -1,11 +1,24 @@
 #ifndef RISCV_SBI_EID_10_H
 #define RISCV_SBI_EID_10_H
 
-#include "riscv_sbi_encoding.h"
+#include "sbi_common.h"
 
-/**=======================================================================
+/**======================================================================
  * Base Extension EID #0x10
+ *=======================================================================
+ * Function_Name              SBI_Version   FID     EID
+ * sbi_get_sbi_spec_version   0.2           0       0x10
+ * sbi_get_sbi_impl_id        0.2           1       0x10
+ * sbi_get_sbi_impl_version   0.2           2       0x10
+ * sbi_probe_extension        0.2           3       0x10
+ * sbi_get_mvendorid          0.2           4       0x10
+ * sbi_get_marchid            0.2           5       0x10
+ * sbi_get_mimpid             0.2           6       0x10
  *=======================================================================/
+ */
+
+#define EID_10 0x10ul
+
 /**
  * @brief FID #0
  * Returns the current SBI specification version. This function must always succeed. 
