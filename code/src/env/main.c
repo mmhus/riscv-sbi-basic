@@ -1,12 +1,14 @@
 #include "test_macros.h"
 
+extern void _m_trap_handler(void);
+
 /**
- * @brief test_case wrapper to return to m-mode
+ * @brief run m-mode code
  * 
  * @return int 
  */
 int run(void) {
-  write_csr(mtvec, &m_mode_trap);
+  write_csr(mtvec, &_m_trap_handler);
   write_csr(stvec, &s_mode_trap);
   asm volatile("ecall");  // Switch to S-mode
   int retval = test_case();
