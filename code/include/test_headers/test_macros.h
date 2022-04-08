@@ -6,30 +6,15 @@
 #include "riscv_abi_encoding.h"
 #include "riscv_sbi_encoding.h"
 #include "riscv_encoding.h"
+#include "fw_macros.h"
 
 #include <stdint.h>
 #include <stdbool.h>
 
 // ============================ DEFINES ===============================
 
-#define SET_0 0ull
-#define SET_1 1ull
-
-#define U_MODE 0
-#define S_MODE 1
-#define M_MODE 3
-
 #define TEST_PASS SET_0
 #define TEST_FAIL SET_1
-
-// ============================ MACROS ===============================
-
-#define write_field(reg, mask, shift, value) \
-  reg = (reg & ~mask) | ((value << shift) & mask);
-
-// TODO: incomplete
-#define read_field(reg, mask, shift, value) \
-  reg = (reg & ~mask) | ((value << shift) & mask);
 
 #define END_TEST(end_code) \
   end_test = SET_1;  \
@@ -42,16 +27,18 @@ extern bool end_test;
 // ============================ FUNCTIONS ===============================
 
 /**
- * @brief interrupt handler function that runs in M-mode
+ * @brief exit the test case with exit code
  * 
+ * @param code integer exit code value
  */
-__attribute__((interrupt("machine"))) 
-void m_mode_trap(void);
-
 __attribute__((noreturn))
 void exit_test(int code);
 
-void switch_to_S_mode(void);
+/**
+ * @brief test_case function to return to m_mode
+ * 
+ */
+void return_to_M_mode(void);
 
 // ============================ WEAK FUNCTIONS ===============================
 

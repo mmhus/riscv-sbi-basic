@@ -9,3 +9,17 @@ int test_case(void){}
 __attribute__((weak)) 
 __attribute__((interrupt("supervisor"))) 
 void s_mode_trap(void){}
+
+extern volatile uint64_t tohost;
+__attribute__((noreturn))
+void exit_test(int code)
+{
+  tohost = (code << 1) | 1;
+  while (1);
+}
+
+void return_to_M_mode(void) {
+  uint64_t mstatus1 = read_csr(mstatus); //csrr
+  write_field(mstatus1, MSTATUS_MPP, MSTATUS_MPP_SHIFT, M_MODE)
+  write_csr(mstatus, mstatus1);
+}

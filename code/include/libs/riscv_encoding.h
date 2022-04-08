@@ -4,18 +4,8 @@
 #define RISCV_CSR_ENCODING_H
 
 #ifndef __riscv_xlen
-#define __riscv_xlen 64
+  #define __riscv_xlen 64
 #endif
-
-#define BYTE_ALIGMENT           0
-#define HALF_WORD_ALIGNMENT     1
-#define WORD_ALIGNMENT          2
-#define DOUBLE_WORD_ALIGNMENT   3
-
-#define ILLEGAL_INSTRUCTION 0xffffffff
-
-#define str(x)  #x
-#define xstr(x) str(x)
 
 #define MSTATUS_UIE         0x00000001
 #define MSTATUS_SIE         0x00000002
@@ -573,11 +563,7 @@
 #define PTE_PPN_MASK   ((((1ULL << PTE_PPN_MSB) - 1) >> RISCV_PGSHIFT) << PTE_PPN_SHIFT)
 
 /* Defines for Loads/Stores/AMO/HLV/HSV instruction opcodes and fucnt3/funct7 */
-// Ld/St Instruction Size
-#define DOUBLE_WORD    8
-#define WORD           4
-#define HALF_WORD      2
-#define BYTE           1
+
 // Loads
 #define LD_OPCODE      0b0000011
 #define LB_FUNCT3      0b000
@@ -633,56 +619,6 @@
 #define HSV_H_FUNCT7   0b0110011
 #define HSV_W_FUNCT7   0b0110101
 #define HSV_D_FUNCT7   0b0110111
-
-#ifndef __ASSEMBLER__
-
-#ifdef __GNUC__
-
-#define read_csr(reg) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrr %0, " #reg : "=r"(__tmp)); \
-    __tmp; \
-  }) \
-
-#define write_csr(reg, val) \
-  __extension__ \
-  ({ \
-    asm volatile ("csrw " #reg ", %0" :: "rK"(val)); \
-  }) \
-
-#define swap_csr(reg, val) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrrw %0, " #reg ", %1" : "=r"(__tmp) : "rK"(val)); \
-    __tmp; \
-  }) \
-
-#define set_csr(reg, bit) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrrs %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
-    __tmp; \
-  }) \
-
-#define clear_csr(reg, bit) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrrc %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
-    __tmp; \
-  }) \
-
-#define rdtime() read_csr(time)
-#define rdcycle() read_csr(cycle)
-#define rdinstret() read_csr(instret)
-
-#endif
-
-#endif
 
 #endif
 
@@ -2405,36 +2341,6 @@
 // Custom CSRs
 #define CSR_MNMI 0xbc1
 #define CSR_MSALT 0xbc0
-
-#define read_csr_define(reg) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrr %0, " xstr(reg) : "=r"(__tmp)); \
-    __tmp; \
-  }) \
-
-#define write_csr_define(reg, val) \
-  __extension__ \
-  ({ \
-    asm volatile ("csrw " xstr(reg) ", %0" :: "rK"(val)); \
-  }) \
-
-#define set_csr_define(reg, bit) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrrs %0, " xstr(reg) ", %1" : "=r"(__tmp) : "rK"(bit)); \
-  __tmp; \
-  }) \
-
-#define clear_csr_define(reg, bit) \
-  __extension__ \
-  ({ \
-    unsigned long long __tmp; \
-    asm volatile ("csrrc %0, " xstr(reg) ", %1" : "=r"(__tmp) : "rK"(bit)); \
-    __tmp; \
-  }) \
 
 #define CAUSE_MISALIGNED_FETCH 0x0
 #define CAUSE_FETCH_ACCESS 0x1

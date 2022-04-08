@@ -1,6 +1,19 @@
 #include "test_macros.h"
+#include "fw_macros.h"
+#include "fw_func.h"
 
 extern void _m_trap_handler(void);
+void setup(void);
+
+/**
+ * @brief inline setup function
+ * 
+ */
+inline void setup(void) {
+  enable_pmp();
+  write_csr(mtvec, &_m_trap_handler);
+  write_csr(stvec, &s_mode_trap);
+}
 
 /**
  * @brief run m-mode code
@@ -8,21 +21,13 @@ extern void _m_trap_handler(void);
  * @return int 
  */
 int run(void) {
-  write_csr(mtvec, &_m_trap_handler);
-  write_csr(stvec, &s_mode_trap);
-  asm volatile("ecall");  // Switch to S-mode
-  int retval = test_case();
-  asm volatile("ecall");  // Return to M-mode
-}
+  setup();
+  switch_priv_M_to_S();
 
-/**
- * @brief enables pmp in m-mode using pmpcfg0
- * 
- */
-void enable_pmp(void) {
-  write_csr(pmpaddr0, 0xFFFFFFFFFFFFFFFF);
-  write_csr(pmpcfg0, (PMP_A & PMP_TOR) | PMP_R | PMP_W | PMP_X);
-  asm volatile("sfence.vma");
+  #ifdef DEBUG
+    int retval = test_case();
+    asm volatile("ecall");  // Return to M-mode
+  #endif
 }
 
 /**
@@ -31,7 +36,6 @@ void enable_pmp(void) {
  * @return int 
  */
 int main(void) {
-  enable_pmp();
   int retval = run();
   return retval;
 }
