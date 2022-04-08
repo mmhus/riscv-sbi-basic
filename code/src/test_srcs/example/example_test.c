@@ -22,9 +22,13 @@ void s_mode_trap(void) {
  * @return int 
  */
 int test_case(void) {
-  asm volatile(".word 0xFFFFFFFF");  //illegal instruction
+  struct sbiret get_spec = sbi_get_spec_version();
 
-  // end_test = true;
-  // return TEST_PASS;
+  if (get_spec.error != SBI_SUCCESS)
+    END_TEST(TEST_FAIL);
+
+  if (get_spec.error != SBI_SUCCESS)
+    END_TEST(TEST_FAIL);
+
   END_TEST(TEST_PASS);
 }
