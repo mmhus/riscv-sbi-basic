@@ -1,4 +1,5 @@
 #include "sbi_common.h"
+#include "fw_macros.h"
 
 #define EID_10 0x10ul
 
@@ -19,12 +20,14 @@ struct sbiret sbi_probe_extension(long extension_id) {
     .error = SBI_ERR_FAILED,
     .value = 0xFFFFFFFF
   };
+  // eid 0x10, fid 3
   asm volatile(
-    "mv a7, %[error];"
-    "mv a6, %[value];"
+    "li a7, 0x10;"
+    "li a6, 3;"
+    "mv a0, %0;"
     "ecall;"
     :
-    : [error]"r"(ret.error), [value]"r"(ret.value)
+    : "r"(extension_id)
     : "memory"
   );
   asm volatile(

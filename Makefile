@@ -13,7 +13,7 @@ CFLAGS ?=
 #----------------- ISS VARIABLES -----------------
 # Timeout
 TIMEOUT ?= 5s
-TIMEOUT_CMD = timeout --preserve-status --foreground ${TIMEOUT}
+TIMEOUT_CMD = timeout --foreground ${TIMEOUT}
 
 # Number of harts.
 NUM_HARTS ?= 1
