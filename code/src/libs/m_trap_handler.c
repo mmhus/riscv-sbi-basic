@@ -9,6 +9,9 @@
   #include "test_macros.h"
 #endif
 
+extern void* ecall_args;
+sbi_t* args = 0;
+
 static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
   if (!ret) {
     assert(3780);
@@ -27,17 +30,59 @@ static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
   }
 }
 
+static void eid_10(sbi_t fid, struct sbiret* ret) {
+  switch (fid) {
+    case FID_0: {
+      sbi_spec_version sbi_version;
+      sbi_version.major_ver = 0;
+      sbi_version.minor_ver = 2;
+      ret->value = sbi_version.full_ver;
+      ret->error = SBI_SUCCESS;
+      break;
+    }
+    case FID_1: {
+      ret->value = 7;
+      ret->error = SBI_SUCCESS;
+      break;
+    }
+    case FID_2: {
+      ret->value = 1000;
+      ret->error = SBI_SUCCESS;
+      break;
+    }
+    case FID_3: {
+      sbi_probe_extension_inner((long)args[0], ret);
+      break;
+    }
+    case FID_4: {
+      ret->value = read_csr(mvendorid);
+      ret->error = SBI_SUCCESS;
+      break;
+    }
+    case FID_5: {
+      ret->value = read_csr(marchid);
+      ret->error = SBI_SUCCESS;
+      break;
+    }
+    case FID_6: {
+      ret->value = read_csr(mimpid);
+      ret->error = SBI_SUCCESS;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 struct sbiret handle_sbi_call(void) {
-  // Load eid, fid in variables from registers
-  sbi_t eid = 0xFFFFFFFF;
-  sbi_t fid = 0xFFFFFFFF;
-  asm volatile(
-    "mv %0, a7;"
-    "mv %1, a6;"
-    :"=r"(eid), "=r"(fid)
-    :
-    : "memory"
-  );
+  // Load eid, fid, arguments in variables from registers
+  if (!args)
+    args = (sbi_t*)&ecall_args;
+    
+  sbi_t eid, fid;
+  eid = args[7];
+  fid = args[6];
 
   // setup sbi return struct
   struct sbiret ret = {
@@ -48,55 +93,7 @@ struct sbiret handle_sbi_call(void) {
   // Do the sbi call
   switch (eid) {
     case EID_10: {
-      switch (fid) {
-        case FID_0: {
-          sbi_spec_version sbi_version;
-          sbi_version.major_ver = 0;
-          sbi_version.minor_ver = 2;
-          ret.value = sbi_version.full_ver;
-          ret.error = SBI_SUCCESS;
-          break;
-        }
-        case FID_1: {
-          ret.value = 7;
-          ret.error = SBI_SUCCESS;
-          break;
-        }
-        case FID_2: {
-          ret.value = 1000;
-          ret.error = SBI_SUCCESS;
-          break;
-        }
-        case FID_3: {
-          long extension_id = 0xFFFFFFFF;
-          asm volatile(
-            "mv %0, a0;"
-            :"=r"(extension_id)
-            :
-            : "memory"
-          );
-          sbi_probe_extension_inner(extension_id, &ret);
-          break;
-        }
-        case FID_4: {
-          ret.value = read_csr(mvendorid);
-          ret.error = SBI_SUCCESS;
-          break;
-        }
-        case FID_5: {
-          ret.value = read_csr(marchid);
-          ret.error = SBI_SUCCESS;
-          break;
-        }
-        case FID_6: {
-          ret.value = read_csr(mimpid);
-          ret.error = SBI_SUCCESS;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
+      eid_10(fid, &ret);
       break;
     }
     // eid switch case
