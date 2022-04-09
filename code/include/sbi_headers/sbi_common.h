@@ -40,6 +40,7 @@ struct sbiret {
 
 /* Every SBI function should prefer unsigned long as the data type, i.e. uint32_t */
 typedef unsigned long sbi_t;
+typedef long s_sbi_t;  //signed type
 
 typedef union {
   sbi_t full_ver;

@@ -9,6 +9,23 @@
   #include "test_macros.h"
 #endif
 
+void sbi_probe_extension_inner(extension_id, struct sbiret* ret) {
+  if(!ret)
+    assert(3780);
+
+  switch (extension_id) {
+    case EID_10: {
+      ret->value = 1;
+      ret->error = SBI_SUCCESS;
+    }
+    case default: {
+      ret->value = 0;
+      ret->error = SBI_ERR_NOT_SUPPORTED;
+      break;
+    }
+  }
+}
+
 struct sbiret handle_sbi_call(void) {
   // Load eid, fid in variables from registers
   sbi_t eid = 0xFFFFFFFF;
@@ -23,14 +40,13 @@ struct sbiret handle_sbi_call(void) {
 
   // setup sbi return struct
   struct sbiret ret = {
-    .error = SBI_ERR_NOT_SUPPORTED,
+    .error = SBI_ERR_FAILED,
     .value = 0xFFFFFFFF
   };
 
   // Do the sbi call
   switch (eid) {
-    case EID_10:
-    {
+    case EID_10: {
       switch (fid) {
         case FID_0: {
           sbi_spec_version sbi_version;
@@ -41,30 +57,51 @@ struct sbiret handle_sbi_call(void) {
           break;
         }
         case FID_1: {
+          ret.value = 7;
+          ret.error = SBI_SUCCESS;
           break;
         }
         case FID_2: {
+          ret.value = 1000;
+          ret.error = SBI_SUCCESS;
           break;
         }
         case FID_3: {
+          long extension_id = 0xFFFFFFFF;
+          asm volatile(
+            "mv %0, a0;"
+            :"=r"(extension_id)
+            :
+            : "memory"
+          );
+          sbi_probe_extension_inner(extension_id, ret);
           break;
         }
         case FID_4: {
+          ret.value = read_csr(mvendorid);
+          ret.error = SBI_SUCCESS;
           break;
         }
         case FID_5: {
+          ret.value = read_csr(marchid);
+          ret.error = SBI_SUCCESS;
           break;
         }
         case FID_6: {
+          ret.value = read_csr(mimpid);
+          ret.error = SBI_SUCCESS;
           break;
         }
-        default:
-          assert(TEST_FAIL);
+        default: {
+          break;
+        }
       }
       break;
     }
-    default:
-      assert(TEST_FAIL);
+    // eid switch case
+    default: {
+      break;
+    }
   }
   return ret;
 }
