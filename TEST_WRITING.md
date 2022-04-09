@@ -60,7 +60,7 @@ code/src
 5 directories, 7 files
 ```
 
-Create a new folder in `code/src/test_srcs/<test_name>`, replacing `<test_name>` with the actual name of the test. Please follow the format of the example test given.
+Create a new folder in `code/src/test_srcs/<test_name>`, replacing `<test_name>` with `test__<test_name>` the actual name of the test. Please follow the format of the example test given.
 
 ## Running a test case
 

@@ -25,10 +25,14 @@ int test_case(void) {
   struct sbiret get_spec = sbi_get_spec_version();
 
   if (get_spec.error != SBI_SUCCESS)
-    END_TEST(TEST_FAIL);
+    exit_test(TEST_FAIL);
 
-  if (get_spec.error != SBI_SUCCESS)
-    END_TEST(TEST_FAIL);
+  sbi_spec_version val;
+  val.full_ver = get_spec.value;
+  if (val.major_ver != 0)
+    exit_test(TEST_FAIL);
+  if (val.minor_ver != 2)
+    exit_test(TEST_FAIL);
 
-  END_TEST(TEST_PASS);
+  exit_test(TEST_PASS);
 }

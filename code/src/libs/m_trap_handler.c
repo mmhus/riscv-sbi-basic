@@ -59,47 +59,36 @@ struct sbiret handle_sbi_call(void) {
           break;
         }
         default:
-          exit_test(TEST_FAIL);
+          assert(TEST_FAIL);
       }
       break;
     }
     default:
-      exit_test(TEST_FAIL);
+      assert(TEST_FAIL);
   }
   return ret;
 }
 
-  // // Put retval values in a0, a1
-  // asm volatile(
-  //   "mv a0, %0"
-  //   "mv a1, %1"
-  //   :
-  //   : "r"(ret.error), "r"(ret.value)
-  //   : "memory"
-  // );
-
 __attribute__((naked))
 void m_trap_handler(void) {
+  uint64_t ret_pc = 0xFFFFFFFFFFFFFFFF;  //Invalid default pc ret
+  asm volatile("mv %0, ra" :"=r"(ret_pc)::"memory");
   uint64_t cause = read_csr(mcause);
 
   switch (cause) {
     case CAUSE_SUPERVISOR_ECALL:
     {
-      #ifdef DEBUG
-        if (end_test) {
-          return_to_M_mode();  // Always the same for every test_case
-          write_csr(mepc, read_csr(mepc)+4);
-        } else {
-      #endif
-        handle_sbi_call();
-      #ifdef DEBUG
-        }
-      #endif
+      handle_sbi_call();
+      write_csr(mepc, read_csr(mepc)+4);
       break;
     }
     // Default for mcause
     default:
-      exit_test(TEST_FAIL);
+      assert(TEST_FAIL);
   }
-  asm("ret");
+  asm volatile(
+    "mv ra, %0;"
+    "ret"
+    ::"r"(ret_pc):"memory"
+  );
 }
