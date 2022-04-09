@@ -1,49 +1,18 @@
-
 #include "test_macros.h"
 
-bool pass_fail = TEST_FAIL;
-
-/**
- * @brief interrupt handler function that runs in M-mode
- * 
- */
-__attribute__((interrupt("machine")))
-void handle_trap(void) {
-  uint64_t cause = read_csr(mcause);
-
-  switch (cause) {
-    case CAUSE_ILLEGAL_INSTRUCTION:
-    {
-      write_csr(mepc, read_csr(mepc)+4);
-      pass_fail = TEST_PASS;
-      break;
-    }
-    case CAUSE_MACHINE_ECALL:
-    {
-      if (end_test) {
-        return_to_M_mode();  // Always the same for every test_case
-      } 
-      write_csr(mstatus, mstatus1);
-      break;
-    }
-    default:
-    {
-      break;
-    }
-  }
-}
+int test_case(void);
 
 /**
  * @brief interrupt handler function that runs in S-mode. Not used in this test
  * 
  */
 __attribute__((interrupt("supervisor")))
-void handle_trap(void) {
-  uint64_t cause = read_csr(mcause);
+void s_mode_trap(void) {
+  uint64_t cause = read_csr(scause);
 
   switch (cause) {
     default:
-      END_TEST(TEST_FAIL);
+      break;
   }
 }
 
@@ -53,7 +22,13 @@ void handle_trap(void) {
  * @return int 
  */
 int test_case(void) {
-  asm volatile(".word 0xFFFFFFFF");  //illegal instruction
+  struct sbiret get_spec = sbi_get_spec_version();
 
-  END_TEST(pass_fail);
+  if (get_spec.error != SBI_SUCCESS)
+    END_TEST(TEST_FAIL);
+
+  if (get_spec.error != SBI_SUCCESS)
+    END_TEST(TEST_FAIL);
+
+  END_TEST(TEST_PASS);
 }
