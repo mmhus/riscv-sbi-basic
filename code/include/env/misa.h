@@ -13,7 +13,7 @@
 #define MISA_I_SHIFT                    8
 #define MISA_M_SHIFT                    12
 #define MISA_N_SHIFT                    13
-#define MISA_P_SHIFT                    15         
+#define MISA_P_SHIFT                    15
 #define MISA_Q_SHIFT                    16
 #define MISA_S_SHIFT                    18
 #define MISA_U_SHIFT                    20
