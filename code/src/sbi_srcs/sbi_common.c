@@ -5,7 +5,7 @@
  */
 struct sbiret sbi_inner_wrapper(sbi_t eid, sbi_t fid) {
     struct sbiret ret = { 
-    .error = SBI_ERR_NOT_SUPPORTED,
+    .error = SBI_ERR_FAILED,
     .value = 0xFFFFFFFF
   };
   asm volatile (
