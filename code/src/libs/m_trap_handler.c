@@ -9,16 +9,17 @@
   #include "test_macros.h"
 #endif
 
-void sbi_probe_extension_inner(extension_id, struct sbiret* ret) {
-  if(!ret)
+static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
+  if (!ret) {
     assert(3780);
-
+  }
   switch (extension_id) {
     case EID_10: {
       ret->value = 1;
       ret->error = SBI_SUCCESS;
+      break;
     }
-    case default: {
+    default: {
       ret->value = 0;
       ret->error = SBI_ERR_NOT_SUPPORTED;
       break;
@@ -74,7 +75,7 @@ struct sbiret handle_sbi_call(void) {
             :
             : "memory"
           );
-          sbi_probe_extension_inner(extension_id, ret);
+          sbi_probe_extension_inner(extension_id, &ret);
           break;
         }
         case FID_4: {
