@@ -15,9 +15,9 @@
 #define TEST_PASS SET_0
 #define TEST_FAIL SET_1
 
-#define END_TEST(end_code) \
-  end_test = SET_1;  \
-  return end_code;
+#ifndef assert
+  #define assert(value) exit_test(value)
+#endif
 
 // ============================ GLOBAL VARIABLES ===============================
 

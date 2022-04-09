@@ -28,9 +28,10 @@ int run(void) {
   switch_priv_M_to_S();
 
   #ifdef DEBUG
-    int retval = test_case();
-    asm volatile("ecall");  // Return to M-mode
+    test_case();
   #endif
+
+  return 0;
 }
 
 /**
