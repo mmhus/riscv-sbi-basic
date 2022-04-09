@@ -121,7 +121,7 @@ void m_trap_handler(void) {
     }
     // Default for mcause
     default:
-      assert(TEST_FAIL);
+      assert(3781);
   }
   asm volatile(
     "mv ra, %0;"
