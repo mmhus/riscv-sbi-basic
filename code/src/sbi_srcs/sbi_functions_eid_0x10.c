@@ -1,8 +1,6 @@
 #include "sbi_common.h"
 #include "fw_macros.h"
 
-#define EID_10 0x10ul
-
 struct sbiret sbi_get_spec_version(void) {
   return sbi_inner_wrapper(EID_10, FID_0);
 }
