@@ -1,5 +1,5 @@
-#ifndef RISCV_SBI_EID_10_H
-#define RISCV_SBI_EID_10_H
+#ifndef RISCV_SBI_BASE_EXTENSION_H
+#define RISCV_SBI_BASE_EXTENSION_H
 
 #include "sbi_common.h"
 
@@ -82,4 +82,4 @@ struct sbiret sbi_get_marchid(void);
  */
 struct sbiret sbi_get_mimpid(void);
 
-#endif /* RISCV_SBI_EID_10_H */
+#endif /* RISCV_SBI_BASE_EXTENSION_H */
