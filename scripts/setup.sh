@@ -38,6 +38,7 @@ echo "export RISCV=$TOOLCHAIN_BIN_PATH" >> "$EXPORT_PATH"
 # SPIKE
 git submodule update --init --recursive
 cd "$SCRIPT_DIR/../riscv-isa-sim"
+git checkout 24b962dec17e78d74e4040f572b429e57eb7ee8b
 if [[ ! -d "./build" ]]; then
   mkdir build
   cd build
