@@ -24,26 +24,38 @@ COMPILE_DIR := ${MAKEFILE_DIR}/COMPILE
 ELF_FILE := ${COMPILE_DIR}/sbi.elf
 DIS_FILE := ${COMPILE_DIR}/sbi.asm
 
-SBI_INCL := $(CODE_DIR)/include/sbi_headers
-SBI_SRCS := \
-	$(wildcard $(CODE_DIR)/src/sbi_srcs/*.c) \
-	$(wildcard $(CODE_DIR)/src/sbi_srcs/*.S)
+#----------------- INCLUDE VARIABLES -----------------
 
+FW_INCL := $(CODE_DIR)/include/firmware
+SBI_INCL := $(CODE_DIR)/include/sbi
 LIB_INCL := $(CODE_DIR)/include/libs
+ENV_INCL := $(CODE_DIR)/include/env
+TEST_INCL := $(CODE_DIR)/include/test
+
+ALL_INCL := ${TEST_INCL} ${FW_INCL} ${SBI_INCL} ${LIB_INCL} ${ENV_INCL}
+
+#----------------- SOURCE VARIABLES -----------------
+
+FW_SRCS := \
+	$(wildcard $(CODE_DIR)/src/firmware/*.c) \
+	$(wildcard $(CODE_DIR)/src/firmware/*.S)
+SBI_SRCS := \
+	$(wildcard $(CODE_DIR)/src/sbi/*.c) \
+	$(wildcard $(CODE_DIR)/src/sbi/*.S)
 LIB_SRCS := \
 	$(wildcard $(CODE_DIR)/src/libs/*.c) \
 	$(wildcard $(CODE_DIR)/src/libs/*.S)
-
-ENV_INCL := $(CODE_DIR)/include/env
 ENV_SRCS := \
 	$(wildcard $(CODE_DIR)/src/env/*.c) \
 	$(wildcard $(CODE_DIR)/src/env/*.S)
-
-	FULL_TEST_DIR_PATH := $(abspath $(TEST_DIR))
-TEST_INCL := $(CODE_DIR)/include/test_headers
+FULL_TEST_DIR_PATH := $(abspath $(TEST_DIR))
 TEST_SRCS := \
 	$(wildcard $(FULL_TEST_DIR_PATH)/*.c) \
 	$(wildcard $(FULL_TEST_DIR_PATH)/*.S)
+
+ALL_SRCS :=  ${TEST_SRCS} ${FW_SRCS} ${SBI_SRCS} ${LIB_SRCS} ${ENV_SRCS}
+
+#----------------- OPTIONS VARIABLES -----------------
 
 BASE_CFLAGS := \
 	-Werror \
@@ -54,9 +66,10 @@ BASE_CFLAGS := \
 	-g \
 	-ggdb \
 	-Wl,--entry=_entry \
+	-I${FW_INCL} \
+	-I${SBI_INCL} \
 	-I${LIB_INCL} \
-	-I${ENV_INCL}	\
-	-I${SBI_INCL}	\
+	-I${ENV_INCL} \
 	-I${TEST_INCL}
 
 DISASSEMBLY_FLAGS := \
@@ -72,7 +85,7 @@ DISASSEMBLY_FLAGS := \
 
 SPIKE_OPTIONS := \
 	--isa=rv64imafdcv \
-	-m0x80000000:0x100000 \
+	-m0x80000000:0x400000 \
 	-p${NUM_HARTS} \
 	-l --log-commits
 
@@ -81,9 +94,22 @@ LD_DEFAULT ?=
 LDFLAGS = -T${CODE_DIR}/linker.ld
 
 # Expansions
-COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${TEST_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${SBI_SRCS} ${LDFLAGS} -o $@")
+COMPILE_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${ALL_SRCS} ${LDFLAGS} -o $@")
 DISM_EXP = $(shell echo "$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@")
 ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIKE)/spike ${SPIKE_OPTIONS} ${ELF_FILE} 1> ${RUN_DIR}/$@.out 2> ${RUN_DIR}/$@.err")
+
+
+# @echo "FW_INCL  : "${FW_INCL}
+# @echo "LIB_INCL : "${LIB_INCL}
+# @echo "ENV_INCL : "${ENV_INCL}
+# @echo "SBI_INCL : "${SBI_INCL}
+# @echo "TEST_INCL: "${TEST_INCL}
+# @echo ""
+# @echo "FW_SRCS  : "${FW_SRCS}
+# @echo "SBI_SRCS : "${SBI_SRCS}
+# @echo "ENV_SRCS : "${ENV_SRCS}
+# @echo "LIB_SRCS : "${LIB_SRCS}
+# @echo "TEST_SRCS: "${TEST_SRCS}
 
 # Targets
 
@@ -92,6 +118,7 @@ ISS_EXP = $(shell echo "timeout --preserve-status --foreground ${TIMEOUT} $(SPIK
 default: compile
 
 setup:
+	@echo "\n==== SETUP INFO ==== "
 	@mkdir -p ${COMPILE_DIR}
 	@echo ""
 	@echo "TEST_DIR : "${TEST_DIR}
@@ -100,26 +127,21 @@ setup:
 	@echo "DIS_FILE : "${DIS_FILE}
 	@echo "RUN_DIR  : "${RUN_DIR}
 	@echo ""
-	@echo "LIB_INCL : "${LIB_INCL}
-	@echo "ENV_INCL : "${ENV_INCL}
-	@echo "SBI_INCL : "${SBI_INCL}
-	@echo "TEST_INCL: "${TEST_INCL}
+	@echo "ALL_INCL : "${ALL_INCL}
 	@echo ""
-	@echo "SBI_SRCS : "${SBI_SRCS}
-	@echo "ENV_SRCS : "${ENV_SRCS}
-	@echo "LIB_SRCS : "${LIB_SRCS}
-	@echo "TEST_SRCS: "${TEST_SRCS}
+	@echo "ALL_SRCS : "${ALL_SRCS}
 	@echo ""
 	@echo "LDFLAGS  : "${LDFLAGS}
 	@echo "CFLAGS   : "${CFLAGS}
-	@echo ""
 
 ${ELF_FILE}: setup ${SRCS}
+	@echo "\n==== COMPILING ==== "
 	@echo ${COMPILE_EXP} > ${COMPILE_DIR}/compile_cmd.sh
 	@chmod u+x ${COMPILE_DIR}/compile_cmd.sh
-	$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${TEST_SRCS} ${ENV_SRCS} ${LIB_SRCS} ${SBI_SRCS} ${LDFLAGS} -o $@
+	$(RISCV)/riscv64-unknown-elf-gcc ${BASE_CFLAGS} ${CARCH} ${COPT} ${CFLAGS} ${ALL_SRCS} ${LDFLAGS} -o $@
 
 ${DIS_FILE}: ${ELF_FILE}
+	@echo "\n==== DISASSEMBLING ==== "
 	@echo ${DISM_EXP} > ${COMPILE_DIR}/disassembly_cmd.sh
 	@chmod u+x ${COMPILE_DIR}/disassembly_cmd.sh
 	$(RISCV)/riscv64-unknown-elf-objdump ${DISASSEMBLY_FLAGS} $< > $@
@@ -131,6 +153,7 @@ compile: ${ELF_FILE} ${DIS_FILE}
 	@mv ${COMPILE_DIR}/failed.txt ${COMPILE_DIR}/passed.txt
 
 spike:
+	@echo "\n==== RUNNING SPIKE ==== "
 	@mkdir -p "${RUN_DIR}"
 	@rm -f "${RUN_DIR}/spike.err"
 	@rm -f "${RUN_DIR}/spike.out"

@@ -30,7 +30,7 @@ static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
   }
 }
 
-static void eid_10(sbi_t fid, struct sbiret* ret) {
+static void base_extension_impl(sbi_t fid, struct sbiret* ret) {
   switch (fid) {
     case FID_0: {
       sbi_spec_version sbi_version;
@@ -93,7 +93,7 @@ struct sbiret handle_sbi_call(void) {
   // Do the sbi call
   switch (eid) {
     case EID_10: {
-      eid_10(fid, &ret);
+      base_extension_impl(fid, &ret);
       break;
     }
     // eid switch case

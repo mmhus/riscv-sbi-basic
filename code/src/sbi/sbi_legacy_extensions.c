@@ -1,4 +1,5 @@
 #include "sbi_common.h"
+#include "fw_macros.h"
 
 void sbi_set_timer(uint64_t stime_value) {
   asm volatile(
@@ -17,7 +18,7 @@ void sbi_console_putchar(int ch) {
 }
 
 int sbi_console_getchar(void) {
-  return sbi_inner_wrapper(EID_2, FID_0);
+  return sbi_inner_wrapper(EID_2, FID_0).value;
 }
 
 void sbi_clear_ipi(void) {
