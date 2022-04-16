@@ -5,6 +5,7 @@
 
 #include "riscv_abi_encoding.h"
 #include "sbi_base_extension.h"
+#include "sbi_legacy_extensions.h"
 
 // -------------------------------------------------------------------
 
