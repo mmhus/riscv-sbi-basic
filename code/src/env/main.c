@@ -5,7 +5,6 @@
   #include "test_macros.h"
 #endif
 
-extern void _m_trap_handler(void);
 void setup(void);
 
 /**

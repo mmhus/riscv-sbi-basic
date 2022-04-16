@@ -14,14 +14,14 @@ struct sbiret sbi_get_impl_version(void) {
 }
 
 struct sbiret sbi_probe_extension(long extension_id) {
-    struct sbiret ret = { 
+  struct sbiret ret = {
     .error = SBI_ERR_FAILED,
     .value = 0xFFFFFFFF
   };
   // eid 0x10, fid 3
   asm volatile(
-    "li a7, 0x10;"
-    "li a6, 3;"
+    "li a7, "xstr(EID_10)";"
+    "li a6, "xstr(FID_3)";"
     "mv a0, %0;"
     "ecall;"
     :

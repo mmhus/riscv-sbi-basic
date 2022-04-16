@@ -211,7 +211,11 @@ _m_trap_handler_exceptions:
 
 .section .data
 .global ecall_args
+<<<<<<< HEAD:code/src/libs/_m_trap_handler.S
 .align 3
+=======
+.align 3  #fixes issues related to trap exception misaligned store access
+>>>>>>> 47da54b9b0f92148eb528fa643b3f7bdbc8b833e:code/src/firmware/_m_trap_handler.S
 ecall_args:
   .WORD 0
   .WORD 0
