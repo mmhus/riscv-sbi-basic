@@ -22,12 +22,12 @@ void s_mode_trap(void) {
  * @return int 
  */
 
-int test_case(void){
+int test_case(void) {
     struct sbiret get_marchid = sbi_get_marchid();
 
     if (get_marchid.error != SBI_SUCCESS)
-      exit_test(2);
-    
+      exit_test(TEST_FAIL);
+
     if (get_marchid.value == 0)
-       exit_test(TEST_PASS);   
+       exit_test(TEST_PASS);
 }

@@ -22,12 +22,12 @@ void s_mode_trap(void) {
  * @return int 
  */
 
-int test_case(void){
+int test_case(void) {
     struct sbiret get_mimpid = sbi_get_mimpid();
 
     if (get_mimpid.error != SBI_SUCCESS)
       exit_test(TEST_FAIL);
-    
+
     if (get_mimpid.value == 0)
-       exit_test(TEST_PASS);   
+       exit_test(TEST_PASS);
 }

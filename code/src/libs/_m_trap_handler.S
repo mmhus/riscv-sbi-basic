@@ -211,6 +211,7 @@ _m_trap_handler_exceptions:
 
 .section .data
 .global ecall_args
+.align 3
 ecall_args:
   .WORD 0
   .WORD 0
