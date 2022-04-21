@@ -22,24 +22,22 @@ void s_mode_trap(void) {
  * @return int 
  */
 int test_case(void) {
+  //unsigned long input = 0x10ul;
   struct sbiret get_spec = sbi_probe_extension(EID_10);
-  if (get_spec.value == 1) {
-    if (get_spec.error == SBI_SUCCESS) {
-        exit_test(TEST_PASS);}
-  } else {
-    exit_test(TEST_FAIL);}
+  if(get_spec.value == 1)
+  {
+    if(get_spec.error == SBI_SUCCESS)
+    {
+        exit_test(TEST_PASS);
+    }
+  }
 
-  struct array {
-        uint64_t a[21];
-  } myArray = { { 0x01ul, 0x02ul, 0x03ul, 0x04ul, 0x05ul, 0x06ul, 0x07ul, 0x08ul,
-  0x09ul, 0x0Aul, 0x0Bul, 0x0Cul, 0x0Dul, 0x0Eul, 0x0Ful, 0x54494D45ul, 0x735049ul,
-  0x52464E43ul, 0x48534Dul, 0x53525354ul, 0x504D55ul } };
-  int i;
-  for (i = 0; i < 21; ++i) {
-    get_spec = sbi_probe_extension(myArray.a[i]);
-    if (get_spec.value == 0) {
-    if (get_spec.error == SBI_ERR_NOT_SUPPORTED) {
-        exit_test(TEST_PASS);}
-  } else {
-    exit_test(TEST_FAIL);}}
+  /*sbi_spec_version val;
+  val.full_ver = get_spec.value;
+  if (val.major_ver != 0)
+    exit_test(TEST_FAIL);
+  if (val.minor_ver != 2)
+    exit_test(TEST_FAIL);*/
+else
+  {exit_test(TEST_FAIL);}
 }
