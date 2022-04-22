@@ -73,3 +73,7 @@ Use to terminal to navigate to the `riscv-sbi-basic` directory, and run the foll
 source export.sh
 make spike
 ```
+
+### Spike version
+
+24b962dec17e78d74e4040f572b429e57eb7ee8b
