@@ -22,15 +22,16 @@ void s_mode_trap(void) {
  * @return int 
  */
 int test_case(void) {
-  //unsigned long input = 0x10ul;
   struct sbiret get_spec = sbi_probe_extension(EID_10);
+
   if(get_spec.value == 1)
-  {
-    if(get_spec.error == SBI_SUCCESS)
     {
-        exit_test(TEST_PASS);
-    }
-  }
+        exit_test(6);
+        if(get_spec.error == SBI_SUCCESS)
+        {
+            exit_test(TEST_PASS);
+        }
+     }
 
   /*sbi_spec_version val;
   val.full_ver = get_spec.value;
@@ -39,5 +40,5 @@ int test_case(void) {
   if (val.minor_ver != 2)
     exit_test(TEST_FAIL);*/
 else
-  {exit_test(TEST_FAIL);}
+  {exit_test(10);}
 }
