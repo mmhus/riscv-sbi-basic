@@ -87,6 +87,7 @@ SPIKE_OPTIONS := \
 	--isa=rv64imafdcv \
 	-m0x80000000:0x400000 \
 	-p${NUM_HARTS} \
+	--real-time-clint \
 	-l --log-commits
 
 #if given default LD
