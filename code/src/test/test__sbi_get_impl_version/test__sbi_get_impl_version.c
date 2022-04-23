@@ -17,7 +17,8 @@ void s_mode_trap(void) {
 }
 
 /**
- * @brief Test case example checks for illegal instruction exception
+ * @brief   Returns the current SBI implementation version. The encoding of this version number is specific to
+            the SBI implementation.
  * 
  * @return int 
  */
