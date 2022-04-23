@@ -3,7 +3,7 @@
 int test_case(void);
 
 /**
- * @brief interrupt handler function that runs in S-mode. Not used in this test
+ * @brief Return a value that is legal for the mvendorid CSR and 0 is always a legal value for this CSR.
  * 
  */
 __attribute__((interrupt("supervisor")))
