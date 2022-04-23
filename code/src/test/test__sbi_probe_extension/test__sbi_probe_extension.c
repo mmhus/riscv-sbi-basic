@@ -52,8 +52,7 @@ int test_case(void) {
                   0x53525354ul,             // System Reset Extension
                   0x504D55ul };             // Performance Monitoring Unit Extension
   int i;
-  int j = sizeof(a)/sizeof(uint64_t);       // Determining the size of array
-  for (i = 0; i < j; ++i) {
+  for (i = 0; i < (sizeof(a)/sizeof(a[0])); ++i) {
     get_spec = sbi_probe_extension(a[i]);
     if (get_spec.value == 0) {
     if (get_spec.error == SBI_ERR_NOT_SUPPORTED) {
