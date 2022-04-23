@@ -17,8 +17,9 @@ void s_mode_trap(void) {
 }
 
 /**
- * @brief Test case for all EIDs(entries of array) that are not supported and returns zero. Short description 
- * of each ID is written in comments along with each entry in array.
+ * @brief EIDs that are not supported are written in arrays. For all those EID, function 
+ * returns zero as value. Short description of each ID is written in comments along with
+ * each entry in array. Only EID_10 is supported and will return 1.
  * 
  * @return int 
  */
