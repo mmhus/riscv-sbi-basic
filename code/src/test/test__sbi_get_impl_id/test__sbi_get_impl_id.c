@@ -17,7 +17,8 @@ void s_mode_trap(void) {
 }
 
 /**
- * @brief Test case example checks for illegal instruction exception
+ * @brief Returns the current SBI implementation ID, which is different for every SBI implementation. It is
+intended that this implementation ID allows software to probe for SBI implementation quirks.
  * 
  * @return int 
  */
