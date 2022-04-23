@@ -27,6 +27,19 @@ int test_case(void) {
   if (get_impl.error != SBI_SUCCESS)
     exit_test(TEST_FAIL);
 
-  if (get_impl.value >= 0 ||  get_impl.value <= 6)
+  switch (get_impl.value) {
+  case SBI_imp_id_BBL:
+  case SBI_imp_id_OpenSBI:
+  case SBI_imp_id_Xvisor:
+  case SBI_imp_id_KVM:
+  case SBI_imp_id_RustSBI:
+  case SBI_imp_id_Diosix:
+  case SBI_imp_id_Coffer:
+  case 7:  // FIRST FREE VALUE
     exit_test(TEST_PASS);
+    break;
+  default:
+  exit_test(TEST_FAIL);
+    break;
+  }
 }

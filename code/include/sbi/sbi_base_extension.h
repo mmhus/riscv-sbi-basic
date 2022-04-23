@@ -17,7 +17,17 @@
  *=======================================================================/
  */
 
-#define EID_10 0x10ul
+#define EID_10             0x10ul 
+
+#define SBI_imp_id_BBL     0x00ul //Berkeley Boot Loader (BBL)
+#define SBI_imp_id_OpenSBI 0x01ul
+#define SBI_imp_id_Xvisor  0x02ul
+#define SBI_imp_id_KVM     0x03ul
+#define SBI_imp_id_RustSBI 0x04ul
+#define SBI_imp_id_Diosix  0x05ul
+#define SBI_imp_id_Coffer  0x06ul
+
+
 
 /**
  * @brief FID #0
