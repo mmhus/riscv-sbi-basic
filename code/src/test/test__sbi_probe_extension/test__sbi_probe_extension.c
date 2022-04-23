@@ -17,7 +17,8 @@ void s_mode_trap(void) {
 }
 
 /**
- * @brief Test case example checks for illegal instruction exception
+ * @brief Test case for all EIDs(entries of array) that are not supported and returns zero. Short description 
+ * of each ID is written in comments along with each entry in array.
  * 
  * @return int 
  */
@@ -28,13 +29,6 @@ int test_case(void) {
         exit_test(TEST_PASS);}
   } else {
     exit_test(TEST_FAIL);}
-
-/**
- * @brief Test case for all EIDs(entries of array) that are not supported and returns zero. Short description 
- * of each ID is written in comments along with each entry in array.
- * 
- * @return int 
- */
 
   uint64_t a[] = {0x00ul,                   // Extension: Set Timer
                   0x01ul,                   // Extension: Console Putchar
