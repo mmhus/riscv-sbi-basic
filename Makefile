@@ -83,7 +83,7 @@ DISASSEMBLY_FLAGS := \
 	--show-raw-insn \
 	--source
 
-SPIKE_OPTIONS := \
+SPIKE_OPTIONS = \
 	--isa=rv64imafdcv \
 	-m0x80000000:0x400000 \
 	-p${NUM_HARTS} \
@@ -121,19 +121,23 @@ default: compile
 setup:
 	@echo "\n==== SETUP INFO ==== "
 	@mkdir -p ${COMPILE_DIR}
+	@echo "TEST_DIR    : "${TEST_DIR}
+	@echo "NUM_HARTS   : "${NUM_HARTS}
+	@echo "TIMEOUT     : "${TIMEOUT}
+	@echo "TIMEOUT_CMD : "${TIMEOUT_CMD}
+	@echo "SPIKE_OPT   : "${SPIKE_OPTIONS}
 	@echo ""
-	@echo "TEST_DIR : "${TEST_DIR}
-	@echo "CMP_DIR  : "${COMPILE_DIR}
-	@echo "ELF_FILE : "${ELF_FILE}
-	@echo "DIS_FILE : "${DIS_FILE}
-	@echo "RUN_DIR  : "${RUN_DIR}
+	@echo "CMP_DIR     : "${COMPILE_DIR}
+	@echo "ELF_FILE    : "${ELF_FILE}
+	@echo "DIS_FILE    : "${DIS_FILE}
+	@echo "RUN_DIR     : "${RUN_DIR}
 	@echo ""
-	@echo "ALL_INCL : "${ALL_INCL}
+	@echo "ALL_INCL    : "${ALL_INCL}
 	@echo ""
-	@echo "ALL_SRCS : "${ALL_SRCS}
+	@echo "ALL_SRCS    : "${ALL_SRCS}
 	@echo ""
-	@echo "LDFLAGS  : "${LDFLAGS}
-	@echo "CFLAGS   : "${CFLAGS}
+	@echo "LDFLAGS     : "${LDFLAGS}
+	@echo "CFLAGS      : "${CFLAGS}
 
 ${ELF_FILE}: setup ${SRCS}
 	@echo "\n==== COMPILING ==== "
@@ -153,7 +157,7 @@ compile: ${ELF_FILE} ${DIS_FILE}
 	@touch ${COMPILE_DIR}/failed.txt
 	@mv ${COMPILE_DIR}/failed.txt ${COMPILE_DIR}/passed.txt
 
-spike:
+spike: compile
 	@echo "\n==== RUNNING SPIKE ==== "
 	@mkdir -p "${RUN_DIR}"
 	@rm -f "${RUN_DIR}/spike.err"
