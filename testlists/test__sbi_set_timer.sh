@@ -2,5 +2,4 @@
 set -euo pipefail
 
 source export.sh
-make TEST_DIR="code/src/test/test_sbi_set_timer" CFLAGS="-DDEBUG"
-make spike
+make spike TEST_DIR="code/src/test/test_sbi_set_timer" CFLAGS="-DDEBUG"
