@@ -51,6 +51,26 @@ static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
   }
 }
 
+static void execute_fence(void) {
+  uint64_t hartid = read_csr(mhartid);
+  bool is_fencei = (fencei_mask >> hartid) & 0x1;
+  bool is_sfence = (sfence_mask >> hartid) & 0x1;
+  bool is_sfence_asid = (sfence_asid_mask >> hartid) & 0x1;
+
+  if (is_fencei) {
+    asm volatile("fence.i");
+  } else if (is_sfence || is_sfence_asid) {
+    for (unsigned long i=0; i<sfence_size; i+=sizeof(unsigned long)) {
+      set_csr(mstatus, MSTATUS_MPRV);
+      if (is_sfence_asid)
+        asm volatile("sfence.vma %0, %1"::"r"(sfence_start+i), "r"(sfence_asid) :"memory");
+      else
+        asm volatile("sfence.vma %0"::"r"(sfence_start+i):"memory");
+      clear_csr(mstatus, MSTATUS_MPRV);
+    }
+  }
+}
+
 static inline void send_ipi_inner(unsigned long mask, struct sbiret* ret) {
   for (int i=0; i<NUM_HARTS; i++) {
     if ((mask >> i) & 0x1) {
@@ -261,22 +281,8 @@ void m_trap_handler(void) {
     {
       clear_csr(mip, MIP_MSIP);
 
-      uint64_t hartid = read_csr(mhartid);
-      bool is_fencei = (fencei_mask >> hartid) & 0x1;
-      bool is_sfence = (sfence_mask >> hartid) & 0x1;
-      bool is_sfence_asid = (sfence_asid_mask >> hartid) & 0x1;
-
-      if (is_fencei) {
-        asm volatile("fence.i");
-      } else if (is_sfence || is_sfence_asid) {
-        for (unsigned long i=0; i<sfence_size; i+=sizeof(unsigned long)) {
-          set_csr(mstatus, MSTATUS_MPRV);
-          if (is_sfence_asid)
-            asm volatile("sfence.vma %0, %1"::"r"(sfence_start+i), "r"(sfence_asid) :"memory");
-          else
-            asm volatile("sfence.vma %0"::"r"(sfence_start+i):"memory");
-          clear_csr(mstatus, MSTATUS_MPRV);
-        }
+      if (fencei_mask || sfence_mask || sfence_asid_mask) {
+        execute_fence();
       } else {
         set_csr(sip, MIP_SSIP);
       }
