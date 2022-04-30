@@ -9,7 +9,7 @@ SECTIONS
   .text.init : { *(.text.init) }
 
   . = ALIGN(0x1000);
-  .tohost : { *(.tohost) }
+  .tohost 0x80100000 : { *(.tohost) }
 
   . = ALIGN(0x1000);
   .text : { *(.text) }
