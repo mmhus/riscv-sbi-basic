@@ -29,6 +29,11 @@ static void set_timer_interrupt(struct sbiret* ret) {
   *mtimecmp_hi = -1;
   *mtimecmp_lo = (uint32_t)(cmp_val >> 32);
   *mtimecmp_hi = (uint32_t)(cmp_val);
+
+  uint64_t temp = *mtimecmp_hi;
+  temp = *mtimecmp_lo;
+  asm volatile("fence.i");
+
   set_csr(mie, MIP_MTIP);
   ret->error = SBI_SUCCESS;
 }
@@ -39,6 +44,11 @@ static void clear_timer_interrupt(void) {
   volatile uint32_t* mtimecmp_lo = (volatile uint32_t*)MMR_MTIME_LO(hartid);
   *mtimecmp_hi = -1;
   *mtimecmp_lo = -1;
+
+  uint64_t temp = *mtimecmp_hi;
+  temp = *mtimecmp_lo;
+  asm volatile("fence.i");
+
   // while(read_csr(mip) & MIP_MTIP){}
   clear_csr(mie, MIP_MTIP);
 }
@@ -86,6 +96,9 @@ static inline void send_ipi_inner(unsigned long mask, struct sbiret* ret) {
     if ((mask >> i) & 0x1) {
       volatile uint32_t* ipi_mmr = (volatile uint32_t*)MMR_IPI(i);
       *ipi_mmr = 1;
+      uint64_t temp = *ipi_mmr;
+      if (temp != 1)
+        assert(3783);
     }
   }
   ret->error = SBI_SUCCESS;
