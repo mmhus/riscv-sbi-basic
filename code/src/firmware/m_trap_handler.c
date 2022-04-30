@@ -39,7 +39,8 @@ static void clear_timer_interrupt(void) {
   volatile uint32_t* mtimecmp_lo = (volatile uint32_t*)MMR_MTIME_LO(hartid);
   *mtimecmp_hi = -1;
   *mtimecmp_lo = -1;
-  while(read_csr(mip) & MIP_MTIP){}
+  // while(read_csr(mip) & MIP_MTIP){}
+  clear_csr(mie, MIP_MTIP);
 }
 
 static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
