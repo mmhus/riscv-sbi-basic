@@ -1,5 +1,6 @@
 #include "test_macros.h"
 
+bool interrupt_check = false;
 int test_case(void);
 
 /**
@@ -11,7 +12,12 @@ void s_mode_trap(void) {
   uint64_t cause = read_csr(scause);
 
   switch (cause) {
+    case (CAUSE_IRQ_S_SOFT):
+    interrupt_check = true;
+    sbi_clear_ipi();
+    break;
     default:
+    exit_test(TEST_FAIL);
       break;
   }
 }
@@ -21,13 +27,19 @@ void s_mode_trap(void) {
  * 
  * @return int 
  */
+uint64_t hart_mask = 1;
+
 
 int test_case(void) {
-    struct sbiret get_marchid = sbi_get_marchid();
+  int x;
 
-    if (get_marchid.error != SBI_SUCCESS)
-      exit_test(TEST_FAIL);
-
-    if (get_marchid.value == 0)
-       exit_test(TEST_PASS);
+  for (x=0; x <= 1; x++) {
+  sbi_send_ipi(&hart_mask);
+  if (interrupt_check == true) {
+    interrupt_check = false;
+  } else {
+    exit_test(TEST_FAIL);
+  }
+hart_mask <<=1;
+}
 }
