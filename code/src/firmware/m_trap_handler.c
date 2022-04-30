@@ -33,6 +33,15 @@ static void set_timer_interrupt(struct sbiret* ret) {
   ret->error = SBI_SUCCESS;
 }
 
+static void clear_timer_interrupt(void) {
+  uint64_t hartid = read_csr(mhartid);
+  volatile uint32_t* mtimecmp_hi = (volatile uint32_t*)MMR_MTIME_HI(hartid);
+  volatile uint32_t* mtimecmp_lo = (volatile uint32_t*)MMR_MTIME_LO(hartid);
+  *mtimecmp_hi = -1;
+  *mtimecmp_lo = -1;
+  while(read_csr(mip) & MIP_MTIP){}
+}
+
 static void sbi_probe_extension_inner(long extension_id, struct sbiret* ret) {
   if (!ret) {
     assert(3780);
@@ -273,7 +282,7 @@ void m_trap_handler(void) {
     }
     case CAUSE_IRQ_M_TIMER:
     {
-      // clear_csr(mip, MIP_MTIP);
+      clear_timer_interrupt();
       set_csr(sip, MIP_STIP);
       break;
     }
